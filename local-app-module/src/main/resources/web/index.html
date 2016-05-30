@@ -1,0 +1,104 @@
+<html id="cc-proxy">
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <title>Test Dev Proxy</title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="css/jqueryFileTree.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/toastr.css">
+  <script type="application/javascript" src="js/jquery-2.1.4.js"></script>
+  <script type="application/javascript" src="js/jquery.easing.js"></script>
+  <script type="application/javascript" src="js/jqueryFileTree.js"></script>
+  <script type="application/javascript" src="js/socket.io-1.4.5.js"></script>
+  <script type="application/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  <script type="application/javascript" src="js/toastr.js"></script>
+  <script type="application/javascript" src="js/knockout-3.4.0.js"></script>
+  <script type="application/javascript" src="js/knockout.mapping-latest.js"></script>
+  <script type="application/javascript" src="js/app.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <ul class="nav nav-tabs" style="margin-top:10px;">
+
+          <!-- ko foreach: $data -->
+          <li role="presentation" data-bind="css:{active:$index() == 0}">
+            <a data-toggle="tab" data-bind="text:title, attr:{href:'#' + id()}"></a>
+          </li>
+          <!-- /ko -->
+
+        </ul>
+
+        <div class="tab-content" style="margin-top:10px;">  
+          <!-- ko foreach: $data -->
+          <div class="tab-pane fade" data-bind="css:{'in active':$index() == 0}, attr:{id:id}">
+            <div class="settings">
+              <!-- ko foreach:settings -->
+                <div data-bind="template: { name: type() + '-template' }"></div>
+              <!-- /ko -->
+            </div>
+            <button data-bind="visible:shouldShowSave" onclick="save();" class="btn btn-primary">Save</button>
+          </div>
+          <!-- /ko -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="text/html" id="console-template">
+    <div data-bind="attr:{id:$parent.id() + '-' + key()}, proxy-socket" class="proxy-console">
+      <!-- ko foreach:messages -->
+      <p data-bind="text:$data"></p>
+      <!-- /ko -->
+    </div>
+  </script>
+
+  <script type="text/html" id="textbox-template">
+    <label data-bind="text:label, attr:{for:$parent.id() + '-' + key()}"></label>
+    <div class="panel panel-default">
+      <input type="text" class="form-control" data-bind="value:value, attr:{id:$parent.id() + '-' + key()}">
+    </div>
+  </script>
+
+  <script type="text/html" id="checkbox-template">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" data-bind="checked:value, attr:{id:$parent.id() + '-' + key()}"><span data-bind="text:label"></span>
+      </label>
+    </div>
+  </script>
+
+  <script type="text/html" id="action-template">
+    <div>
+      <button data-bind="text:label, proxy-action"  class="btn btn-default"></button>
+    </div>
+  </script>
+  
+  <script type="text/html" id="file-template">
+    <div class="form-group">
+      <label data-bind="text:label,attr:{for:$parent.id() + '-' + key()}"></label>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+          	<span data-bind="css:folderClass"></span> 
+            <a  data-bind="text:value, attr:{href:'#' + $parent.id() + '-' + key()}" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1"></a> 
+          </h4>
+        </div>
+        <div data-bind="attr:{id:$parent.id() + '-' + key()}, proxy-fileTree" class="panel-collapse collapse fileSelector" role="tabpanel" aria-expanded="true">
+          
+        </div>
+      </div>
+
+    </div>
+
+  </script>
+</body>
+
+</html>

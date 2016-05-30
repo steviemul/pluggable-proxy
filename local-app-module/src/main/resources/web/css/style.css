@@ -1,0 +1,27 @@
+h1 {
+  color:blue;
+}
+
+.proxy-console {
+  background: #002B36;
+  color:#839496;
+  height:500px;
+  overflow-y: scroll;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.glyphicon {
+  margin-right:5px;
+}
+
+.fileSelector {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.settings {
+  margin-bottom: 10px;
+  padding-bottom:10px;
+  border-bottom: 1px solid #CCC;
+}
