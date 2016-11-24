@@ -1,0 +1,29 @@
+function FindProxyForURL(url, host) {
+ 	
+  #if( $hostsToIntercept )
+  	#foreach( $host in $hostsToIntercept )
+  	  #if( $!host )
+        if (dnsDomainIs(host, "$host")) {
+          return "PROXY $interceptProxy";
+        }
+      #end
+    #end
+  #end
+  
+  #if( $noProxyFor )
+    #foreach( $host in $noProxyFor )
+      #if( $host )
+        if (dnsDomainIs(host, "$host")) {
+          return "DIRECT";
+        }
+      #end
+    #end
+  #end
+  
+  #if( $externalProxy )
+    return "PROXY $externalProxy";
+  #else
+  	return "DIRECT";
+  #end
+  
+}

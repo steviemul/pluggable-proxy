@@ -41,6 +41,12 @@ public class TrafficCaptureServingModule extends AbstractModule {
   
   public static final String CAPTURING_PATTERN = "capturingPattern";
   
+  public static final String TEMPLATE_DIRECTORY = "templateDirectory";
+  
+  public static final String ALLOW_TEMPLATE_OVERRIDES = "allowTemplateOverrides";
+  
+  public static final String DUMP_TEMPLATES = "dumpTemplates";
+  
   private static Map<String, String> mLabels = new HashMap<>();
   
   static {
@@ -49,6 +55,9 @@ public class TrafficCaptureServingModule extends AbstractModule {
     mLabels.put(CAPTURING, "Capturing");
     mLabels.put(CLEAR_DIRECTORY, "Clear Content Directory");
     mLabels.put(CAPTURING_PATTERN, "Capturing Pattern");
+    mLabels.put(TEMPLATE_DIRECTORY, "Template Directory");
+    mLabels.put(ALLOW_TEMPLATE_OVERRIDES, "Allow Template Overrides");
+    mLabels.put(DUMP_TEMPLATES, "Dump Templates");
   }
   
   /* (non-Javadoc)
@@ -104,11 +113,14 @@ public class TrafficCaptureServingModule extends AbstractModule {
   @Override
   public List<ModuleSetting> getSettings() {
     return Arrays.asList(
-        new ModuleSetting(CONTENT_DIRECTORY, ModuleSettingType.FILE, 5),
-        new ModuleSetting(SERVING_LOCAL, ModuleSettingType.CHECKBOX, "false", 2),
+        new ModuleSetting(CAPTURING_PATTERN, ModuleSettingType.TEXT_BOX, 0),
         new ModuleSetting(CAPTURING, ModuleSettingType.CHECKBOX, "false", 1),
-        new ModuleSetting(CAPTURING_PATTERN, ModuleSettingType.TEXT_BOX, 4),
-        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 3));
+        new ModuleSetting(SERVING_LOCAL, ModuleSettingType.CHECKBOX, "false", 2),
+        new ModuleSetting(CONTENT_DIRECTORY, ModuleSettingType.FILE, 3),
+        new ModuleSetting(TEMPLATE_DIRECTORY, ModuleSettingType.FILE, 4),
+        new ModuleSetting(DUMP_TEMPLATES, ModuleSettingType.CHECKBOX, "false", 5),
+        new ModuleSetting(ALLOW_TEMPLATE_OVERRIDES, ModuleSettingType.CHECKBOX, "false", 6),
+        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 7));
   }
 
   /* (non-Javadoc)

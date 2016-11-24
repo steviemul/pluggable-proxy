@@ -59,6 +59,7 @@ public class ModuleSetting {
   public ModuleSetting(String pName, ModuleSettingType pType, int pOrder) {
     mName = pName;
     mType = pType;
+    mOrder = pOrder;
     
     if (mType == ModuleSettingType.FILE) {
       mDefault = System.getProperty("user.home");
@@ -66,8 +67,6 @@ public class ModuleSetting {
     else {
       mDefault = "";
     }
-    
-    mOrder = 0;
   }
   
   /**

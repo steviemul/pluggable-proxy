@@ -22,7 +22,7 @@ import net.stevemul.proxy.utils.AppUtils;
 /**
  * The Class ResponseCachingProcessor.
  */
-public class ResponseCachingProcessor implements ResponseProcessor {
+public class ResponseCachingProcessor extends AbstractResponseProcessor {
 
   private static Log mLogger = LogFactory.getLog(ResponseCachingProcessor.class);
   
@@ -44,10 +44,10 @@ public class ResponseCachingProcessor implements ResponseProcessor {
 
 
   /* (non-Javadoc)
-   * @see net.stevemul.proxy.processors.spi.ResponseProcessor#processResponse(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.http.Response, net.stevemul.proxy.data.ModuleSettings)
+   * @see net.stevemul.proxy.processors.AbstractResponseProcessor#processServerToProxyResponse(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.http.Response, net.stevemul.proxy.data.ModuleSettings)
    */
   @Override
-  public Response processResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings) {
+  public Response processServerToProxyResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings) {
     
     try {
       String contentLocationSetting = pSettings.getStringValue(TrafficCaptureServingModule.CONTENT_DIRECTORY);

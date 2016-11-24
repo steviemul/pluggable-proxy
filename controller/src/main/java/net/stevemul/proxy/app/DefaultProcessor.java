@@ -91,7 +91,8 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
   public HttpFilters filterRequest(final HttpRequest pOriginalRequest, ChannelHandlerContext pCtx) {
     
     return new HttpFiltersAdapter(pOriginalRequest) {
-    
+      
+      
       /* (non-Javadoc)
        * @see org.littleshoot.proxy.HttpFiltersAdapter#clientToProxyRequest(io.netty.handler.codec.http.HttpObject)
        */
@@ -102,7 +103,15 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
           return processAction(pOriginalRequest, pHttpObject);
         }
         else {
-          return processRequest(pOriginalRequest, pHttpObject);
+          HttpResponse response = processRequest(pOriginalRequest, pHttpObject);
+          
+          if (response != null) {
+            response = (HttpResponse) processProxyToClientResponse(pOriginalRequest, response);
+            
+            response.headers().add("X-CC_Request_Processed", true);
+          }
+          
+          return response;
         }
       }
       
@@ -111,8 +120,26 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
        */
       @Override
       public HttpObject serverToProxyResponse(HttpObject pHttpObject) {
-        return processResponse(pOriginalRequest, pHttpObject);
+        return processServerToProxyResponse(pOriginalRequest, pHttpObject);
       }
+
+      /* (non-Javadoc)
+       * @see org.littleshoot.proxy.HttpFiltersAdapter#proxyToClientResponse(io.netty.handler.codec.http.HttpObject)
+       */
+      @Override
+      public HttpObject proxyToClientResponse(HttpObject httpObject) {
+        if (httpObject instanceof HttpResponse) {
+          HttpResponse response = (HttpResponse) httpObject;
+          
+          if (response.headers().contains("X-CC_Request_Processed")) {
+            return response;
+          }
+        }
+        
+        return processProxyToClientResponse(pOriginalRequest, httpObject);
+      }
+      
+      
     };
   }
   
@@ -204,13 +231,13 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
   }
   
   /**
-   * Process response.
+   * Process server to proxy response.
    *
    * @param pOriginalRequest the original request
    * @param pHttpObject the http object
    * @return the http object
    */
-  private HttpObject processResponse(final HttpRequest pOriginalRequest, HttpObject pHttpObject) {
+  private HttpObject processServerToProxyResponse(final HttpRequest pOriginalRequest, HttpObject pHttpObject) {
     
     String uri = pOriginalRequest.getUri();
     
@@ -227,7 +254,7 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
             
             mLogger.debug("Response uri : " + uri + " processed by " + processor);
             
-            Response processedResponse = processor.processResponse(request, proxiedResponse, settings);
+            Response processedResponse = processor.processServerToProxyResponse(request, proxiedResponse, settings);
             
             if (processedResponse != null) {
               pHttpObject = toHttpObject(processedResponse);
@@ -240,6 +267,42 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
     return pHttpObject;
   }
   
+  /**
+   * Process proxy to client response.
+   *
+   * @param pOriginalRequest the original request
+   * @param pHttpObject the http object
+   * @return the http object
+   */
+  private HttpObject processProxyToClientResponse(final HttpRequest pOriginalRequest, HttpObject pHttpObject) {
+    
+    String uri = pOriginalRequest.getUri();
+    
+    for (Module module : mModuleService.getModules()) {
+      if (isModuleEnabled(module)) {
+        ModuleSettings settings = ModuleDataHandler.getInstance().getModuleData(module);
+        
+        ProxiedHttpRequest request = new ProxiedHttpRequest(pOriginalRequest);
+        
+        for (ResponseProcessor processor : module.getResponseProcessors()) {
+          if (processor.accepts(request, settings)) {
+            
+            ProxiedHttpResponse proxiedResponse = new ProxiedHttpResponse(pHttpObject);
+            
+            mLogger.debug("Response uri : " + uri + " processed by " + processor);
+            
+            Response processedResponse = processor.processProxyToClientResponse(request, proxiedResponse, settings);
+            
+            if (processedResponse != null) {
+              pHttpObject = toHttpObject(processedResponse);
+            }
+          }
+        }
+      }
+    }
+    
+    return pHttpObject;
+  }
   /**
    * To http object.
    *

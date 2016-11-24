@@ -143,11 +143,7 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
    * @return the http response
    */
   private HttpResponse buildResponse(byte[] pContent, Map<String, String> headers)  {
-    
-    if (pContent.length == 0) {
-      return null;
-    }
-    
+      
     String contentType = getContentType(headers);
     
     Evaluator evaluator = Evaluator.getInstance();
@@ -165,6 +161,8 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
     for (String header : headers.keySet()) {
       newResponse.headers().add(header, headers.get(header));
     }
+    
+    newResponse.headers().add("X-CC_Response_Cached", "Reponse served from local proxy cache");
     
     HttpHeaders.setContentLength(newResponse, pContent.length);
     

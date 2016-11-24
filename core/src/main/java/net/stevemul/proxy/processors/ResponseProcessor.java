@@ -11,14 +11,24 @@ import net.stevemul.proxy.processors.Processor;
  * @author smulrenn
  */
 public interface ResponseProcessor extends Processor {
-
+  
   /**
-   * Process response.
+   * Process server to proxy response.
    *
    * @param pRequest the request
    * @param pResponse the response
    * @param pSettings the settings
    * @return the response
    */
-  public Response processResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings);
+  public Response processServerToProxyResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings);
+  
+  /**
+   * Process proxy to client response.
+   *
+   * @param pRequest the request
+   * @param pResponse the response
+   * @param pSettings the settings
+   * @return the response
+   */
+  public Response processProxyToClientResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings);
 }
