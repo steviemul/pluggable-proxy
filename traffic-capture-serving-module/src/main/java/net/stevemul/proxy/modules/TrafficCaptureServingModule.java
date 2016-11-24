@@ -10,10 +10,11 @@ import net.stevemul.proxy.modules.api.AbstractModule;
 import net.stevemul.proxy.modules.api.Action;
 import net.stevemul.proxy.modules.api.ModuleSetting;
 import net.stevemul.proxy.modules.api.ModuleSettingType;
+import net.stevemul.proxy.processors.AlternateServerRequestProcessor;
 import net.stevemul.proxy.processors.LocalCachedRequestProcessor;
 import net.stevemul.proxy.processors.PagesEndpointResponseProcessor;
-import net.stevemul.proxy.processors.ResponseCachingProcessor;
 import net.stevemul.proxy.processors.RequestProcessor;
+import net.stevemul.proxy.processors.ResponseCachingProcessor;
 import net.stevemul.proxy.processors.ResponseProcessor;
 
 /**
@@ -47,6 +48,12 @@ public class TrafficCaptureServingModule extends AbstractModule {
   
   public static final String DUMP_TEMPLATES = "dumpTemplates";
   
+  public static final String ENABLE_ALTERNATE_SERVER_LOOKUPS = "alternateServerLookups";
+  
+  public static final String ALTERNATE_SERVER_RESOURCES = "alternateServerResources";
+  
+  public static final String ALTERNATE_SERVER_URL = "alternateServerUrl";
+  
   private static Map<String, String> mLabels = new HashMap<>();
   
   static {
@@ -58,6 +65,9 @@ public class TrafficCaptureServingModule extends AbstractModule {
     mLabels.put(TEMPLATE_DIRECTORY, "Template Directory");
     mLabels.put(ALLOW_TEMPLATE_OVERRIDES, "Allow Template Overrides");
     mLabels.put(DUMP_TEMPLATES, "Dump Templates");
+    mLabels.put(ENABLE_ALTERNATE_SERVER_LOOKUPS, "Enable Alternative Server Lookups");
+    mLabels.put(ALTERNATE_SERVER_RESOURCES, "Alternative Server Resources (Comma Separated)");
+    mLabels.put(ALTERNATE_SERVER_URL, "Alternative Server URL");
   }
   
   /* (non-Javadoc)
@@ -65,7 +75,9 @@ public class TrafficCaptureServingModule extends AbstractModule {
    */
   @Override
   public List<? extends RequestProcessor> getRequestProcessors() {
-    return Arrays.asList(new LocalCachedRequestProcessor());
+    return Arrays.asList(
+        new AlternateServerRequestProcessor(),
+        new LocalCachedRequestProcessor());
   }
 
   /* (non-Javadoc)
@@ -120,7 +132,10 @@ public class TrafficCaptureServingModule extends AbstractModule {
         new ModuleSetting(TEMPLATE_DIRECTORY, ModuleSettingType.FILE, 4),
         new ModuleSetting(DUMP_TEMPLATES, ModuleSettingType.CHECKBOX, "false", 5),
         new ModuleSetting(ALLOW_TEMPLATE_OVERRIDES, ModuleSettingType.CHECKBOX, "false", 6),
-        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 7));
+        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 7),
+        new ModuleSetting(ENABLE_ALTERNATE_SERVER_LOOKUPS, ModuleSettingType.CHECKBOX, "false", 8),
+        new ModuleSetting(ALTERNATE_SERVER_RESOURCES, ModuleSettingType.TEXT_BOX, 9),
+        new ModuleSetting(ALTERNATE_SERVER_URL, ModuleSettingType.TEXT_BOX, 10));
   }
 
   /* (non-Javadoc)
