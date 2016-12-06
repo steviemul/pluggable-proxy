@@ -72,6 +72,18 @@ public class LocalProxyBuilder {
   }
   
   /**
+   * Sets the blind trust.
+   *
+   * @param pBlindTrust the blind trust
+   * @return the local proxy builder
+   */
+  public LocalProxyBuilder setBlindTrust(boolean pBlindTrust) {
+    proxy.mTrustAllCertificates = pBlindTrust;
+    
+    return this;
+  }
+  
+  /**
    * Builds the.
    *
    * @return the local proxy

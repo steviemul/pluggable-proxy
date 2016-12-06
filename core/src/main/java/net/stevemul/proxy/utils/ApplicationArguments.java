@@ -12,6 +12,7 @@ public class ApplicationArguments {
   public static final String LISTEN_PORT = "listenPort";
   public static final String PROXY_HOST = "proxyHost";
   public static final String PROXY_PORT = "proxyPort";
+  public static final String BLIND_TRUST = "blindTrust";
   
   private static final String DASH = "-";
   private static final String EQUALS = "=";
@@ -33,6 +34,9 @@ public class ApplicationArguments {
       
       if (asArg(MITM).equals(arg)) {
         parsedArgs.put(MITM, "true");
+      }
+      else if (asArg(BLIND_TRUST).equals(arg)) {
+        parsedArgs.put(BLIND_TRUST, "true");
       }
       else if (arg.startsWith(asArg(LISTEN_PORT))) {
         String[] options = arg.split(EQUALS);

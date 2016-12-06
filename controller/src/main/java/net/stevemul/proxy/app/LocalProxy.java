@@ -1,7 +1,5 @@
 package net.stevemul.proxy.app;
 
-import io.netty.handler.codec.http.HttpRequest;
-
 import java.net.InetSocketAddress;
 import java.util.Queue;
 
@@ -12,8 +10,10 @@ import org.littleshoot.proxy.ChainedProxyAdapter;
 import org.littleshoot.proxy.ChainedProxyManager;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
-import org.littleshoot.proxy.mitm.CertificateSniffingMitmManager;
 import org.littleshoot.proxy.mitm.RootCertificateException;
+
+import io.netty.handler.codec.http.HttpRequest;
+import net.stevemul.proxy.mitm.TrustingMitmManager;
 
 /**
  * The Class LocalProxy.
@@ -35,6 +35,7 @@ public class LocalProxy {
   boolean mMitmEnabled = false;
   String mDownstreamProxyHost = null;
   int mDownstreamProxyPort = 80;
+  boolean mTrustAllCertificates = false;
   
   /**
    * Chained proxy manager.
@@ -61,10 +62,15 @@ public class LocalProxy {
    * The Class BaseChainedProxy.
    */
   private class BaseChainedProxy extends ChainedProxyAdapter {
+
+    /* (non-Javadoc)
+     * @see org.littleshoot.proxy.ChainedProxyAdapter#getChainedProxyAddress()
+     */
     @Override
     public InetSocketAddress getChainedProxyAddress() {
       return new InetSocketAddress(mDownstreamProxyHost, mDownstreamProxyPort);
     }
+
   }
   
   /**
@@ -84,9 +90,9 @@ public class LocalProxy {
     
     if (mMitmEnabled) {
       mLogger.info("Enabling MITM");
-      mServer = mServer.withManInTheMiddle(new CertificateSniffingMitmManager());
+      mServer = mServer.withManInTheMiddle(new TrustingMitmManager(mTrustAllCertificates));
     }
-    
+   
     mLogger.info("Proxy initialization successful");
     
     mServer.start();

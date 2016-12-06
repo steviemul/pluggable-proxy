@@ -97,16 +97,19 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
       Date now = new Date();
       DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.ENGLISH);
       
-      String title = json.getString("title") + " (Proxied at " + df.format(now) + ")";
+      if (json.has("title")) {
+        String title = json.getString("title") + " (Proxied at " + df.format(now) + ")";
+        
+        json.put("title", title);
+        
+        processPagesEndpoint(json, pSettings);
+        
+        content = json.toString();
+      }
       
-      json.put("title", title);
-      
-      processPagesEndpoint(json, pSettings);
-      
-      content = json.toString();
     }
     catch(JSONException e) {
-      e.printStackTrace();
+      mLogger.error("Error parsing page response.", e);
     }
     
     return content;

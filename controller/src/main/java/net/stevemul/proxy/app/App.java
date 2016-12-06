@@ -81,6 +81,10 @@ public class App {
       builder.setMitmEnabled(true);
     }
     
+    if (parsedArgs.containsKey(ApplicationArguments.BLIND_TRUST)) {
+      builder.setBlindTrust(true);
+    }
+    
     if (parsedArgs.containsKey(ApplicationArguments.LISTEN_PORT)) {
       builder.setListenPort(Integer.valueOf(parsedArgs.get(ApplicationArguments.LISTEN_PORT)));
     }
