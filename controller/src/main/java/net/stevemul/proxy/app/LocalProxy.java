@@ -91,6 +91,13 @@ public class LocalProxy {
     if (mMitmEnabled) {
       mLogger.info("Enabling MITM");
       mServer = mServer.withManInTheMiddle(new TrustingMitmManager(mTrustAllCertificates));
+      
+      if (mTrustAllCertificates) {
+        mLogger.info("Trusting all backend certificates");
+      }
+      else {
+        mLogger.info("Trusting valid backend certificates only");
+      }
     }
    
     mLogger.info("Proxy initialization successful");
