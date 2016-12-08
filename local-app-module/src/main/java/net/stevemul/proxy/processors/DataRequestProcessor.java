@@ -23,6 +23,8 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import net.stevemul.proxy.Constants;
+import net.stevemul.proxy.Environment;
 import net.stevemul.proxy.data.ModuleSettingData;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
@@ -30,6 +32,7 @@ import net.stevemul.proxy.modules.api.Module;
 import net.stevemul.proxy.modules.api.ModuleSettingType;
 import net.stevemul.proxy.services.ModuleService;
 import net.stevemul.proxy.services.ServiceRegistry;
+import net.stevemul.proxy.utils.ApplicationArguments;
 
 /**
  * The Class DataRequestProcessor.
@@ -64,7 +67,7 @@ public class DataRequestProcessor implements RequestProcessor {
   public HttpResponse processRequest(ProxiedHttpRequest pRequest, HttpObject pObject, ModuleSettings pSettings) {
     
     if (pRequest.getMethod().equals(HttpMethod.GET)) {
-      String data = getModulesJsonData();
+      String data = getJsonData();
       
       return buildResponse(data);
     }
@@ -131,11 +134,12 @@ public class DataRequestProcessor implements RequestProcessor {
    *
    * @return the modules json data
    */
-  private String getModulesJsonData() {
+  private String getJsonData() {
     
     List<Module> modules = mModuleService.getModules();
     
-    JSONArray data = new JSONArray();
+    JSONObject data = new JSONObject();
+    JSONArray jsonModules = new JSONArray();
     
     for (Module module : modules) {
       List<ModuleSettingData> settings = mModuleService.getModuleData(module);
@@ -148,11 +152,39 @@ public class DataRequestProcessor implements RequestProcessor {
         moduleData.put("namespace", module.getNamespace());
         moduleData.put("id", module.getNamespace().replace(".", "-"));
         
-        data.put(moduleData);
+        jsonModules.put(moduleData);
       }
     }
     
+    data.put("modules", jsonModules);
+    data.put("application", getAppSettings());
+    
     return data.toString();
+  }
+  
+  /**
+   * Gets the app settings.
+   *
+   * @return the app settings
+   */
+  private JSONObject getAppSettings() {
+    JSONObject appSettings = new JSONObject();
+    
+    int listenPort = Constants.DEFAULT_SOCKET_IO_PORT;
+    String hostname = Constants.DEFAULT_HOSTNAME;
+    
+    if (Environment.getEnvironmentArgument(ApplicationArguments.SOCKET_IO_PORT) != null) {
+      listenPort = Integer.valueOf(Environment.getEnvironmentArgument(ApplicationArguments.SOCKET_IO_PORT));
+    }
+    
+    if (Environment.getEnvironmentArgument(ApplicationArguments.OVERRIDE_HOSTNAME) != null) {
+      hostname = Environment.getEnvironmentArgument(ApplicationArguments.OVERRIDE_HOSTNAME);
+    }
+    
+    appSettings.put("SocketIOPort", listenPort);
+    appSettings.put("Hostname", hostname);
+    
+    return appSettings;
   }
   
   /**

@@ -42,7 +42,12 @@
 
   ko.bindingHandlers['proxy-socket'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var socket = io.connect('http://localhost:9091');
+      var port = ko.unwrap(bindingContext.$root.application.SocketIOPort);
+      var hostname = ko.unwrap(bindingContext.$root.application.Hostname);
+
+      var socketIOAddress = 'http://' + hostname + ':' + port;
+
+      var socket = io.connect(socketIOAddress);
 
       socket.on('connect', function () {
         viewModel.messages.push("Successfully connected");
@@ -59,9 +64,10 @@
   $(document).ready(function () {
     $.get("data", function (data) {
       var viewModel = ko.mapping.fromJS(data);
+      var modules = viewModel.modules;
 
-      for (var i = 0; i < viewModel().length; i++) {
-        var settings = viewModel()[i].settings();
+      for (var i = 0; i < modules().length; i++) {
+        var settings = modules()[i].settings();
 
         var shouldShowSave = false;
 
@@ -78,7 +84,7 @@
           }
         }
 
-        viewModel()[i].shouldShowSave = ko.observable(shouldShowSave);
+        modules()[i].shouldShowSave = ko.observable(shouldShowSave);
       }
 
       ko.applyBindings(viewModel, document.getElementById("cc-proxy"));
@@ -91,7 +97,7 @@
     var rootElement = document.getElementById("cc-proxy")
     var viewModel = ko.dataFor(rootElement);
 
-    var data = ko.mapping.toJS(viewModel);
+    var data = ko.mapping.toJS(viewModel.modules);
 
     $.ajax({
       url: "data",

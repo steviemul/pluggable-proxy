@@ -26,7 +26,7 @@
 
         <ul class="nav nav-tabs" style="margin-top:10px;">
 
-          <!-- ko foreach: $data -->
+          <!-- ko foreach: modules -->
           <li role="presentation" data-bind="css:{active:$index() == 0}">
             <a data-toggle="tab" data-bind="text:title, attr:{href:'#' + id()}"></a>
           </li>
@@ -34,8 +34,8 @@
 
         </ul>
 
-        <div class="tab-content" style="margin-top:10px;">  
-          <!-- ko foreach: $data -->
+        <div class="tab-content" style="margin-top:10px;">
+          <!-- ko foreach: modules -->
           <div class="tab-pane fade" data-bind="css:{'in active':$index() == 0}, attr:{id:id}">
             <div class="settings">
               <!-- ko foreach:settings -->
@@ -79,7 +79,7 @@
       <button data-bind="text:label, proxy-action"  class="btn btn-default"></button>
     </div>
   </script>
-  
+
   <script type="text/html" id="file-template">
     <div class="form-group">
       <label data-bind="text:label,attr:{for:$parent.id() + '-' + key()}"></label>
@@ -87,12 +87,12 @@
       <div class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
-          	<span data-bind="css:folderClass"></span> 
-            <a  data-bind="text:value, attr:{href:'#' + $parent.id() + '-' + key()}" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1"></a> 
+          	<span data-bind="css:folderClass"></span>
+            <a  data-bind="text:value, attr:{href:'#' + $parent.id() + '-' + key()}" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1"></a>
           </h4>
         </div>
         <div data-bind="attr:{id:$parent.id() + '-' + key()}, proxy-fileTree" class="panel-collapse collapse fileSelector" role="tabpanel" aria-expanded="true">
-          
+
         </div>
       </div>
 

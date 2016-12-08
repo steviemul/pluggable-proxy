@@ -6,6 +6,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.littleshoot.proxy.mitm.RootCertificateException;
 
+import net.stevemul.proxy.Constants;
+import net.stevemul.proxy.Environment;
 import net.stevemul.proxy.messenger.SocketIO;
 import net.stevemul.proxy.services.ServiceRegistry;
 import net.stevemul.proxy.utils.AppUtils;
@@ -32,13 +34,16 @@ public class App {
     try {
       mLogger.info(AppUtils.getString(MSG_PROXY_STARTING));
       
-      LocalProxy proxy = buildProxy(args);
+      Map<String, String> parsedArgs = ApplicationArguments.parseArgs(args);
+      
+      LocalProxy proxy = buildProxy(parsedArgs);
       
       mLogger.info(AppUtils.getString(MSG_SOCKET_IO_STARTING));
       
-      mMessenger = new SocketIO(9091);
+      mMessenger = buildMessenger(parsedArgs);
       
       proxy.start();
+      
       mMessenger.start();
       
       ServiceRegistry.registerMessenger(mMessenger);
@@ -57,6 +62,8 @@ public class App {
       });
       
       mLogger.info(AppUtils.getString(MSG_APP_STARTED));
+      
+      Environment.setEnvironmentArguments(parsedArgs);
     }
     catch (Exception e) {
       mLogger.fatal(AppUtils.getString(ERROR_INIT_APP), e);
@@ -71,33 +78,48 @@ public class App {
    * @return the local proxy
    * @throws RootCertificateException the root certificate exception
    */
-  private static LocalProxy buildProxy(String args[]) throws RootCertificateException {
+  private static LocalProxy buildProxy(Map<String, String> pParsedArgs) throws RootCertificateException {
     
     LocalProxyBuilder builder = LocalProxyBuilder.newInstance();
     
-    Map<String, String> parsedArgs = ApplicationArguments.parseArgs(args);
-    
-    if (parsedArgs.containsKey(ApplicationArguments.MITM)) {
+    if (pParsedArgs.containsKey(ApplicationArguments.MITM)) {
       builder.setMitmEnabled(true);
     }
     
-    if (parsedArgs.containsKey(ApplicationArguments.BLIND_TRUST)) {
+    if (pParsedArgs.containsKey(ApplicationArguments.BLIND_TRUST)) {
       builder.setBlindTrust(true);
     }
     
-    if (parsedArgs.containsKey(ApplicationArguments.LISTEN_PORT)) {
-      builder.setListenPort(Integer.valueOf(parsedArgs.get(ApplicationArguments.LISTEN_PORT)));
+    if (pParsedArgs.containsKey(ApplicationArguments.LISTEN_PORT)) {
+      builder.setListenPort(Integer.valueOf(pParsedArgs.get(ApplicationArguments.LISTEN_PORT)));
     }
     
-    if (parsedArgs.containsKey(ApplicationArguments.PROXY_HOST)) {
-      builder.setDownstreamProxyHost(parsedArgs.get(ApplicationArguments.PROXY_HOST));
+    if (pParsedArgs.containsKey(ApplicationArguments.PROXY_HOST)) {
+      builder.setDownstreamProxyHost(pParsedArgs.get(ApplicationArguments.PROXY_HOST));
     }
     
-    if (parsedArgs.containsKey(ApplicationArguments.PROXY_PORT)) {
-      builder.setDownstreamProxyPort(Integer.valueOf(parsedArgs.get(ApplicationArguments.PROXY_PORT)));
+    if (pParsedArgs.containsKey(ApplicationArguments.PROXY_PORT)) {
+      builder.setDownstreamProxyPort(Integer.valueOf(pParsedArgs.get(ApplicationArguments.PROXY_PORT)));
     }
     
     return builder.build();
+  }
+  
+  /**
+   * Builds the messenger.
+   *
+   * @param pParsedArgs the parsed args
+   * @return the socket IO
+   */
+  private static SocketIO buildMessenger(Map<String, String> pParsedArgs) {
+    
+    int listenPort = Constants.DEFAULT_SOCKET_IO_PORT;
+    
+    if (pParsedArgs.containsKey(ApplicationArguments.SOCKET_IO_PORT)) {
+      listenPort = Integer.valueOf(pParsedArgs.get(ApplicationArguments.SOCKET_IO_PORT));
+    }
+    
+    return new SocketIO(listenPort);
   }
   
   /**

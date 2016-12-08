@@ -13,12 +13,16 @@ public class ApplicationArguments {
   public static final String PROXY_HOST = "proxyHost";
   public static final String PROXY_PORT = "proxyPort";
   public static final String BLIND_TRUST = "blindTrust";
+  public static final String SOCKET_IO_PORT = "socketIOPort";
+  public static final String OVERRIDE_HOSTNAME = "hostname";
   
   private static final String DASH = "-";
   private static final String EQUALS = "=";
   private static final String ERROR_INVALID_PORT = "error.invalidPort";
   private static final String ERROR_INVALID_PROXY_HOST = "error.invalidProxyHost";
   private static final String ERROR_INVALID_PROXY_PORT = "error.invalidProxyPort";
+  private static final String ERROR_INVALID_SOCKET_IO_PORT = "error.invalidSocketIOPort";
+  private static final String ERROR_INVALID_HOST = "error.invalidHostname";
   
   /**
    * Parses the args.
@@ -66,6 +70,25 @@ public class ApplicationArguments {
         }
         
         parsedArgs.put(PROXY_PORT, options[1]);
+      }
+      else if (arg.startsWith(asArg(SOCKET_IO_PORT))) {
+        
+        String[] options = arg.split(EQUALS);
+        
+        if (options.length != 2) {
+          throw new IllegalArgumentException(AppUtils.getString(ERROR_INVALID_SOCKET_IO_PORT, arg));
+        }
+        
+        parsedArgs.put(SOCKET_IO_PORT, options[1]);
+      }
+      else if (arg.startsWith(asArg(OVERRIDE_HOSTNAME))) {
+        String[] options = arg.split(EQUALS);
+        
+        if (options.length != 2) {
+          throw new IllegalArgumentException(AppUtils.getString(ERROR_INVALID_HOST, arg));
+        }
+        
+        parsedArgs.put(OVERRIDE_HOSTNAME, options[1]);
       }
     }
     
