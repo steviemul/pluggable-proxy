@@ -15,6 +15,7 @@ public class ApplicationArguments {
   public static final String BLIND_TRUST = "blindTrust";
   public static final String SOCKET_IO_PORT = "socketIOPort";
   public static final String OVERRIDE_HOSTNAME = "hostname";
+  public static final String HELP = "help";
   
   private static final String DASH = "-";
   private static final String EQUALS = "=";
@@ -24,6 +25,7 @@ public class ApplicationArguments {
   private static final String ERROR_INVALID_SOCKET_IO_PORT = "error.invalidSocketIOPort";
   private static final String ERROR_INVALID_HOST = "error.invalidHostname";
   
+  
   /**
    * Parses the args.
    *
@@ -32,6 +34,11 @@ public class ApplicationArguments {
    */
   public static Map<String, String> parseArgs(String args[]) {
     Map<String, String> parsedArgs = new HashMap<>();
+    
+    if (args.length == 1 && asArg(HELP).equals(args[0])) {
+      printHelpMessage();
+      System.exit(0);
+    }
     
     for (int i=0;i<args.length;i++) {
       String arg = args[i];
@@ -93,6 +100,34 @@ public class ApplicationArguments {
     }
     
     return parsedArgs;
+  }
+  
+  private static void printHelpMessage() {
+    
+    StringBuilder message = new StringBuilder();
+    
+    message.append("usage : app [options]\n");
+    message.append("Options:\n");
+    message.append(buildParamMessage(HELP));
+    message.append(buildParamMessage(MITM));
+    message.append(buildParamMessage(LISTEN_PORT));
+    message.append(buildParamMessage(PROXY_HOST));
+    message.append(buildParamMessage(PROXY_PORT));
+    message.append(buildParamMessage(BLIND_TRUST));
+    message.append(buildParamMessage(SOCKET_IO_PORT));
+    message.append(buildParamMessage(OVERRIDE_HOSTNAME));
+    
+    System.out.println(message.toString());
+  }
+  
+  /**
+   * Builds the param message.
+   *
+   * @param pParam the param
+   * @return the string
+   */
+  private static String buildParamMessage(String pParam) {
+    return "  " + DASH + pParam + " : " + AppUtils.getString("info." + pParam) + "\n";
   }
   
   /**
