@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -18,7 +19,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.processors.RequestProcessor;
+import net.stevemul.proxy.utils.MimeUtils;
 
 /**
  * The Class LocalAppRequestProcessor.
@@ -32,9 +33,10 @@ public class LocalAppRequestProcessor implements RequestProcessor {
   public static final String INDEX_HTML = "index.html";
   public static final String WEB_FOLDER = FORWARD_SLASH + "web";
   public static final String DATA_URL = "data";
+  public static final String FAVICON_ICO = "favicon.ico";
   
   private static Log mLogger = LogFactory.getLog(LocalAppRequestProcessor.class);
-
+  
   /* (non-Javadoc)
    * @see net.stevemul.proxy.processors.Processor#accepts(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.data.ModuleSettings)
    */
@@ -42,7 +44,7 @@ public class LocalAppRequestProcessor implements RequestProcessor {
   public boolean accepts(ProxiedHttpRequest pRequest, ModuleSettings pSettings) {
     String uri = pRequest.getUri();
     
-    return uri.startsWith(ADMIN_CONTEXT) && !(uri.startsWith(ADMIN_CONTEXT + FORWARD_SLASH + DATA_URL));
+    return (uri.startsWith(ADMIN_CONTEXT) && !(uri.startsWith(ADMIN_CONTEXT + FORWARD_SLASH + DATA_URL))) || uri.endsWith(FAVICON_ICO);
   }
 
   /* (non-Javadoc)
@@ -73,6 +75,8 @@ public class LocalAppRequestProcessor implements RequestProcessor {
     
     String resource = getResourcePath(uri);
     
+    String mimeType = MimeUtils.getMimeTypeFromFileExtension(resource);
+    
     try (InputStream in = getInputStreamForResource(resource)) {
       if (in == null) {
         status = HttpResponseStatus.NOT_FOUND;
@@ -91,6 +95,10 @@ public class LocalAppRequestProcessor implements RequestProcessor {
     DefaultFullHttpResponse newResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, buffer);
     
     HttpHeaders.setContentLength(newResponse, responseContent.length);
+    
+    if (!StringUtils.isEmpty(mimeType)) {
+      newResponse.headers().set("Content-Type", mimeType);
+    }
     
     return newResponse;
   }
