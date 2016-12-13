@@ -45,7 +45,7 @@
       var port = ko.unwrap(bindingContext.$root.application.SocketIOPort);
       var hostname = ko.unwrap(bindingContext.$root.application.Hostname);
 
-      var socketIOAddress = 'http://' + hostname + ':' + port;
+      var socketIOAddress = '//' + hostname + ':' + port;
 
       var socket = io.connect(socketIOAddress);
 
