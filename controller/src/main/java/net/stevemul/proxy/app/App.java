@@ -102,6 +102,10 @@ public class App {
       builder.setDownstreamProxyPort(Integer.valueOf(pParsedArgs.get(ApplicationArguments.PROXY_PORT)));
     }
     
+    if (pParsedArgs.containsKey(ApplicationArguments.ALLOW_EXTERNAL_CONNECTIONS)) {
+      builder.setAllowExternalConnections(true);
+    }
+    
     return builder.build();
   }
   

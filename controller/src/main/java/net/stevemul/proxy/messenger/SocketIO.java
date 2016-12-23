@@ -26,7 +26,6 @@ public class SocketIO implements Messenger {
   public SocketIO(int pPort) {
     
     Configuration config = new Configuration();
-    config.setHostname("localhost");
     config.setPort(pPort);
 
     mServer = new SocketIOServer(config);

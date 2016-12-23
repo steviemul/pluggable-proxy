@@ -16,6 +16,7 @@ public class ApplicationArguments {
   public static final String SOCKET_IO_PORT = "socketIOPort";
   public static final String OVERRIDE_HOSTNAME = "hostname";
   public static final String HELP = "help";
+  public static final String ALLOW_EXTERNAL_CONNECTIONS = "allowExternal";
   
   private static final String DASH = "-";
   private static final String EQUALS = "=";
@@ -45,6 +46,9 @@ public class ApplicationArguments {
       
       if (asArg(MITM).equals(arg)) {
         parsedArgs.put(MITM, "true");
+      }
+      else if (asArg(ALLOW_EXTERNAL_CONNECTIONS).equals(arg)) {
+        parsedArgs.put(ALLOW_EXTERNAL_CONNECTIONS, "true");
       }
       else if (asArg(BLIND_TRUST).equals(arg)) {
         parsedArgs.put(BLIND_TRUST, "true");
@@ -110,6 +114,7 @@ public class ApplicationArguments {
     message.append("Options:\n");
     message.append(buildParamMessage(HELP));
     message.append(buildParamMessage(MITM));
+    message.append(buildParamMessage(ALLOW_EXTERNAL_CONNECTIONS));
     message.append(buildParamMessage(LISTEN_PORT));
     message.append(buildParamMessage(PROXY_HOST));
     message.append(buildParamMessage(PROXY_PORT));

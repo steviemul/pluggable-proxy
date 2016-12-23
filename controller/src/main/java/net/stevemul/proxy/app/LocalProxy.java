@@ -36,6 +36,7 @@ public class LocalProxy {
   String mDownstreamProxyHost = null;
   int mDownstreamProxyPort = 80;
   boolean mTrustAllCertificates = false;
+  boolean mLocalOnlyConnections = true;
   
   /**
    * Chained proxy manager.
@@ -80,12 +81,19 @@ public class LocalProxy {
   public void start() throws RootCertificateException {
     
     mLogger.info("Starting proxy on port " + mListenPort);
-    
-    mServer = DefaultHttpProxyServer.bootstrap().withPort(mListenPort).withFiltersSource(new DefaultProcessor());
+   
+    mServer = DefaultHttpProxyServer.bootstrap().withAllowLocalOnly(mLocalOnlyConnections).withPort(mListenPort).withFiltersSource(new DefaultProcessor());
     
     if (mDownstreamProxyHost != null) {
       mLogger.info("Chaining proxy to downstream proxy at " + mDownstreamProxyHost + ":" + mDownstreamProxyPort);
       mServer = mServer.withChainProxyManager(chainedProxyManager());
+    }
+    
+    if (mLocalOnlyConnections) {
+      mLogger.info("Allowing local client connections only.");
+    }
+    else {
+      mLogger.info("Allow external client connections.");
     }
     
     if (mMitmEnabled) {

@@ -84,6 +84,18 @@ public class LocalProxyBuilder {
   }
   
   /**
+   * Sets the allow external connections.
+   *
+   * @param pAllowExternalConnections the allow external connections
+   * @return the local proxy builder
+   */
+  public LocalProxyBuilder setAllowExternalConnections(boolean pAllowExternalConnections) {
+    proxy.mLocalOnlyConnections = !pAllowExternalConnections;
+    
+    return this;
+  }
+  
+  /**
    * Builds the.
    *
    * @return the local proxy
