@@ -22,7 +22,7 @@ public class DBHandler {
   private static Log mLogger = LogFactory.getLog(DBHandler.class);
   
   /** The Constant DB_FOLDER. */
-  public static final String DB_FOLDER = ".smproxy/db";
+  public static final String DB_FOLDER = ".devproxy/db";
   
   /** The Constant DB_FILE. */
   public static final String DB_FILE = "proxydb";

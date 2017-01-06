@@ -132,10 +132,7 @@ public class TrafficCaptureServingModule extends AbstractModule {
         new ModuleSetting(TEMPLATE_DIRECTORY, ModuleSettingType.FILE, 4),
         new ModuleSetting(DUMP_TEMPLATES, ModuleSettingType.CHECKBOX, "false", 5),
         new ModuleSetting(ALLOW_TEMPLATE_OVERRIDES, ModuleSettingType.CHECKBOX, "false", 6),
-        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 7),
-        new ModuleSetting(ENABLE_ALTERNATE_SERVER_LOOKUPS, ModuleSettingType.CHECKBOX, "false", 8),
-        new ModuleSetting(ALTERNATE_SERVER_RESOURCES, ModuleSettingType.TEXT_BOX, 9),
-        new ModuleSetting(ALTERNATE_SERVER_URL, ModuleSettingType.TEXT_BOX, 10));
+        new ModuleSetting(CLEAR_DIRECTORY, ModuleSettingType.ACTION, "false", 7));
   }
 
   /* (non-Javadoc)

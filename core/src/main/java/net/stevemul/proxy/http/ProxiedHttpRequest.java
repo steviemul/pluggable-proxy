@@ -2,6 +2,7 @@ package net.stevemul.proxy.http;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.stevemul.proxy.Constants.Q_MARK;
+import static net.stevemul.proxy.Constants.FORWARD_SLASH;
 
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -134,5 +135,27 @@ public class ProxiedHttpRequest {
    */
   public HttpRequest getInternalRequest() {
     return mInternalRequest;
+  }
+  
+  /**
+   * Gets the resource path.
+   *
+   * @return the resource path
+   */
+  public String getResourcePath() {
+    
+    String uri = mInternalRequest.getUri();
+    
+    if (uri.startsWith(FORWARD_SLASH)) {
+      uri = uri.substring(1);
+    }
+    
+    int queryPos = uri.indexOf(Q_MARK);
+    
+    if (queryPos > -1) {
+      uri = uri.substring(0, queryPos);
+    }
+    
+    return uri;
   }
 }

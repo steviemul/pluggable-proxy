@@ -17,6 +17,7 @@
     <module>traffic-capture-serving-module</module>
     <module>traffic-rewrite-module</module>
     <module>auto-proxy-module</module>
+    <module>static-resources-module</module>
   </modules>
 
   <build>
