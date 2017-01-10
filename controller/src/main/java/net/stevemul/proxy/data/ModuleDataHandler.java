@@ -50,7 +50,7 @@ public class ModuleDataHandler {
    */
   public ModuleSettings getModuleData(Module pModule) {
     
-    ModuleSettings data = new ModuleSettings();
+    ModuleSettings data = new ModuleSettings(pModule.getNamespace());
     
     try {
       Connection con = mDBHandler.getConnection();

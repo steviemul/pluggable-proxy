@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Application</name>
+  <namespace>stevemul.net.proxy.application</namespace>
+  <loading-priority>0</loading-priority>
+  <request-processors>
+  	<processor>net.stevemul.proxy.processors.DataRequestProcessor</processor>
+  	<processor>net.stevemul.proxy.processors.LocalAppRequestProcessor</processor>
+  	<processor>net.stevemul.proxy.processors.FileSystemRequestProcessor</processor>
+  </request-processors>
+</module>

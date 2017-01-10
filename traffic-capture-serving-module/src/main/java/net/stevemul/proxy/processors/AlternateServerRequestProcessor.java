@@ -22,9 +22,9 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.modules.TrafficCaptureServingModule;
 
 /**
  * The Class AlternateServerRequestProcessor.
@@ -39,12 +39,12 @@ public class AlternateServerRequestProcessor implements RequestProcessor {
   @Override
   public boolean accepts(ProxiedHttpRequest pRequest, ModuleSettings pSettings) {
     
-    boolean enabled = pSettings.getBooleanValue(TrafficCaptureServingModule.ENABLE_ALTERNATE_SERVER_LOOKUPS);
+    boolean enabled = pSettings.getBooleanValue(TrafficCaptureConstants.ENABLE_ALTERNATE_SERVER_LOOKUPS);
     
     if (enabled) {
       String uri = pRequest.getUri();
-      String resourcesPattern = pSettings.getStringValue(TrafficCaptureServingModule.ALTERNATE_SERVER_RESOURCES);
-      String alternateServer = pSettings.getStringValue(TrafficCaptureServingModule.ALTERNATE_SERVER_URL);
+      String resourcesPattern = pSettings.getStringValue(TrafficCaptureConstants.ALTERNATE_SERVER_RESOURCES);
+      String alternateServer = pSettings.getStringValue(TrafficCaptureConstants.ALTERNATE_SERVER_URL);
       
       if (!StringUtils.isEmpty(resourcesPattern) && !StringUtils.isEmpty(alternateServer)) {
         Pattern pattern = Pattern.compile(resourcesPattern);
@@ -67,7 +67,7 @@ public class AlternateServerRequestProcessor implements RequestProcessor {
   public HttpResponse processRequest(ProxiedHttpRequest pRequest, HttpObject pObject, ModuleSettings pSettings) {
     
     String uri = pRequest.getUri();
-    String alternateServer = pSettings.getStringValue(TrafficCaptureServingModule.ALTERNATE_SERVER_URL);
+    String alternateServer = pSettings.getStringValue(TrafficCaptureConstants.ALTERNATE_SERVER_URL);
     
     return getUriFromServer(alternateServer, uri);
   }

@@ -15,17 +15,18 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.LocalHttpResponse;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.http.Response;
-import net.stevemul.proxy.modules.TrafficCaptureServingModule;
 
 /**
  * The Class PagesEndpointResponseProcessor.
@@ -59,24 +60,28 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
   @Override
   public Response processProxyToClientResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings) {
     
+    LocalHttpResponse newResponse = null;
+        
     String content = new String(pResponse.getContent(), UTF_8);
     
-    content = filterContent(content, pSettings);
-    
-    byte[] bytes = content.getBytes(UTF_8);
-    
-    LocalHttpResponse newResponse = new LocalHttpResponse();
-    
-    newResponse.setStatusCode(200);
-    newResponse.setContent(bytes);
-    
-    Map<String, String> headers = pResponse.getHeaders();
-    
-    for (String header : headers.keySet()) {
-      newResponse.setHeader(header, headers.get(header));
-    }
+    if (!StringUtils.isEmpty(content)) {
+      content = filterContent(content, pSettings);
       
-    newResponse.setHeader("X-CC_Proxied", "Reponse modified by dev proxy");
+      byte[] bytes = content.getBytes(UTF_8);
+      
+      newResponse = new LocalHttpResponse();
+      
+      newResponse.setStatusCode(200);
+      newResponse.setContent(bytes);
+      
+      Map<String, String> headers = pResponse.getHeaders();
+      
+      for (String header : headers.keySet()) {
+        newResponse.setHeader(header, headers.get(header));
+      }
+        
+      newResponse.setHeader("X-CC_Proxied", "Reponse modified by dev proxy");
+    }
     
     return newResponse;
   }
@@ -131,8 +136,8 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
    */
   private void processPagesEndpoint(JSONObject pInput, ModuleSettings pSettings) {
   
-    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureServingModule.ALLOW_TEMPLATE_OVERRIDES);
-    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureServingModule.DUMP_TEMPLATES);
+    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureConstants.ALLOW_TEMPLATE_OVERRIDES);
+    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureConstants.DUMP_TEMPLATES);
     
     if (allowTemplateOverrides || dumpTemplates) {
       JSONArray regions = pInput.optJSONArray(REGIONS);
@@ -151,7 +156,7 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
               
               try {
                 
-                String templateDir = pSettings.getStringValue(TrafficCaptureServingModule.TEMPLATE_DIRECTORY);
+                String templateDir = pSettings.getStringValue(TrafficCaptureConstants.TEMPLATE_DIRECTORY);
                 
                 String templateSrcLocation = templateDir + File.separator + id + ".html";
                 String elementSrcLocation = templateDir + File.separator + id + ".elements.html";
@@ -182,8 +187,8 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
    */
   private void overrideWidgetPropertyFromFileIfApplicable(JSONObject pWidget, String pProperty, String pFileLocation, ModuleSettings pSettings) throws FileNotFoundException, IOException {
     
-    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureServingModule.ALLOW_TEMPLATE_OVERRIDES);
-    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureServingModule.DUMP_TEMPLATES);
+    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureConstants.ALLOW_TEMPLATE_OVERRIDES);
+    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureConstants.DUMP_TEMPLATES);
     
     String prop = pWidget.optString(pProperty, "");
     

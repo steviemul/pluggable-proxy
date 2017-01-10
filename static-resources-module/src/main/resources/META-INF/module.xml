@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Local Resource Overrides</name>
+  <namespace>stevemul.net.staticresources</namespace>
+  <loading-priority>40</loading-priority>
+   <settings>
+  	<setting>
+  	  <name>enabled</name>
+  	  <type>CHECKBOX</type>
+  	  <order>1</order>
+  	  <label>Enable serving static resources locally</label>
+  	</setting>
+  	<setting>
+  	  <name>pathsToServe</name>
+  	  <type>TEXT_BOX</type>
+  	  <order>2</order>
+  	  <label>Comma separated list of paths to serve</label>
+  	</setting>
+  	<setting>
+  	  <name>staticResourcesDirectory</name>
+  	  <type>FILE</type>
+  	  <order>3</order>
+  	  <label>Location of local resources</label>
+  	</setting>
+  </settings>
+  <request-processors>
+  	<processor>net.stevemul.proxy.processors.StaticResourcesRequestProcessor</processor>
+  </request-processors>
+</module>

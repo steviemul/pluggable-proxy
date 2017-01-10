@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Console</name>
+  <namespace>stevemul.net.trafficoutput</namespace>
+  <loading-priority>5</loading-priority>
+   <settings>
+  	<setting>
+  	  <name>output</name>
+  	  <type>CONSOLE</type>
+  	  <order>0</order>
+  	  <label>Network Traffic</label>
+  	</setting>
+  </settings>
+  <response-processors>
+  	<processor>net.stevemul.proxy.processors.TrafficOutputResponseProcessor</processor>
+  </response-processors>
+</module>

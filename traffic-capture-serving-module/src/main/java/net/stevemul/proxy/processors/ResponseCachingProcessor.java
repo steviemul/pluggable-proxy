@@ -12,11 +12,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import io.netty.handler.codec.http.HttpMethod;
+import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.http.ProxiedHttpResponse;
 import net.stevemul.proxy.http.Response;
-import net.stevemul.proxy.modules.TrafficCaptureServingModule;
 import net.stevemul.proxy.utils.AppUtils;
 
 /**
@@ -37,7 +37,7 @@ public class ResponseCachingProcessor extends AbstractResponseProcessor {
       return false;
     }
     
-    boolean capturing = pSettings.getBooleanValue(TrafficCaptureServingModule.CAPTURING);
+    boolean capturing = pSettings.getBooleanValue(TrafficCaptureConstants.CAPTURING);
     
     return capturing;
   }
@@ -50,7 +50,7 @@ public class ResponseCachingProcessor extends AbstractResponseProcessor {
   public Response processServerToProxyResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings) {
     
     try {
-      String contentLocationSetting = pSettings.getStringValue(TrafficCaptureServingModule.CONTENT_DIRECTORY);
+      String contentLocationSetting = pSettings.getStringValue(TrafficCaptureConstants.CONTENT_DIRECTORY);
       
       byte[] content = pResponse.getContent();
     

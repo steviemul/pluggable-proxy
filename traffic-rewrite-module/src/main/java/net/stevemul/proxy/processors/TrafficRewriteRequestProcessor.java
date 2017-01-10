@@ -5,20 +5,21 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.modules.TrafficRewriteModule;
 
 /**
  * The Class TrafficRewriteRequestProcessor.
  */
 public class TrafficRewriteRequestProcessor implements RequestProcessor {
-
+  
+  public static final String SERVING_NON_MIN = "servingNonMin";
+  
   /* (non-Javadoc)
    * @see net.stevemul.proxy.processors.Processor#accepts(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.data.ModuleSettings)
    */
   @Override
   public boolean accepts(ProxiedHttpRequest pRequest, ModuleSettings pSettings) {
     
-    if (pSettings.getBooleanValue(TrafficRewriteModule.SERVING_NON_MIN)) {
+    if (pSettings.getBooleanValue(SERVING_NON_MIN)) {
       String uri = pRequest.getUri();
       
       if (uri.contains("/element/") || uri.contains("/widget/")) {

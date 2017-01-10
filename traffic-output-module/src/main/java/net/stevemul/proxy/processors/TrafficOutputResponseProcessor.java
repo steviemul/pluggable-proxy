@@ -3,7 +3,6 @@ package net.stevemul.proxy.processors;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.http.Response;
-import net.stevemul.proxy.modules.TrafficOutputModule;
 import net.stevemul.proxy.services.ServiceRegistry;
 
 /**
@@ -27,7 +26,7 @@ public class TrafficOutputResponseProcessor extends AbstractResponseProcessor {
     
     String uri = pRequest.getUri();
 
-    ServiceRegistry.getMessenger().sendMessage(TrafficOutputModule.NAMESPACE.replace(".", "-") + "-networkevent", "Response : " + uri);
+    ServiceRegistry.getMessenger().sendMessage(pSettings.getNamespace().replace(".", "-") + "-networkevent", "Response : " + uri);
     
     return pResponse;
   }

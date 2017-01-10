@@ -23,7 +23,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.modules.StaticResourcesModule;
 import net.stevemul.proxy.utils.MimeUtils;
 
 /**
@@ -32,6 +31,10 @@ import net.stevemul.proxy.utils.MimeUtils;
 public class StaticResourcesRequestProcessor implements RequestProcessor {
   
   private static Log mLogger = LogFactory.getLog(StaticResourcesRequestProcessor.class);
+  
+  public static final String ENABLED = "enabled";
+  public static final String STATIC_RESOURCES_DIRECTORY = "staticResourcesDirectory";
+  public static final String PATHS_TO_SERVE = "pathsToServe";
   
   /**
    * Accepts.
@@ -47,14 +50,14 @@ public class StaticResourcesRequestProcessor implements RequestProcessor {
       return false;
     }
     
-    boolean enabled = pSettings.getBooleanValue(StaticResourcesModule.ENABLED);
+    boolean enabled = pSettings.getBooleanValue(ENABLED);
     
     if (enabled) {
       
-      String resourcesLocation = pSettings.getStringValue(StaticResourcesModule.STATIC_RESOURCES_DIRECTORY);
+      String resourcesLocation = pSettings.getStringValue(STATIC_RESOURCES_DIRECTORY);
       
       if (!StringUtils.isEmpty(resourcesLocation)) {
-        String[] paths = pSettings.getStringValue(StaticResourcesModule.PATHS_TO_SERVE).split(",");
+        String[] paths = pSettings.getStringValue(PATHS_TO_SERVE).split(",");
         
         for (String path : paths) {
           if (pRequest.getResourcePath().startsWith(path)) {
@@ -79,7 +82,7 @@ public class StaticResourcesRequestProcessor implements RequestProcessor {
   public HttpResponse processRequest(ProxiedHttpRequest pRequest, HttpObject pObject, ModuleSettings pSettings) {
     
     String resourcePath = pRequest.getResourcePath();
-    String resourcesLocation = pSettings.getStringValue(StaticResourcesModule.STATIC_RESOURCES_DIRECTORY);
+    String resourcesLocation = pSettings.getStringValue(STATIC_RESOURCES_DIRECTORY);
     
     String localPath = resourcesLocation + resourcePath;
     

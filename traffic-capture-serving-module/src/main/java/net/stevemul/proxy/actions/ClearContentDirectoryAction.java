@@ -5,10 +5,10 @@ import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.modules.api.Action;
-import net.stevemul.proxy.modules.TrafficCaptureServingModule;
 
 /**
  * The Class ClearContentDirectoryAction.
@@ -24,7 +24,7 @@ public class ClearContentDirectoryAction implements Action {
   @Override
   public void execute(ProxiedHttpRequest pRequest, ModuleSettings pSettings) {
     
-    String contentDirectory = pSettings.getStringValue(TrafficCaptureServingModule.CONTENT_DIRECTORY);
+    String contentDirectory = pSettings.getStringValue(TrafficCaptureConstants.CONTENT_DIRECTORY);
     
     if (contentDirectory != null) {
       File directory = new File(contentDirectory);

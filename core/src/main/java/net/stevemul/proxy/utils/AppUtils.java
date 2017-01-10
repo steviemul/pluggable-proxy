@@ -1,10 +1,17 @@
 package net.stevemul.proxy.utils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static net.stevemul.proxy.Constants.FORWARD_SLASH;
+import static net.stevemul.proxy.Constants.HOST;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,8 +27,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import static net.stevemul.proxy.Constants.HOST;
-import static net.stevemul.proxy.Constants.FORWARD_SLASH;
 
 public class AppUtils {
   
@@ -176,6 +181,25 @@ public class AppUtils {
     }
     
     return "";
+  }
+  
+  /**
+   * Load resources.
+   *
+   * @param name the name
+   * @param classLoader the class loader
+   * @return the list
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
+  public static List<InputStream> loadResources(final String name, final ClassLoader classLoader) throws IOException {
+    final List<InputStream> list = new ArrayList<InputStream>();
+    final Enumeration<URL> systemResources = (classLoader == null ? ClassLoader.getSystemClassLoader() : classLoader).getResources(name);
+    
+    while (systemResources.hasMoreElements()) {
+      list.add(systemResources.nextElement().openStream());
+    }
+  
+    return list;
   }
   
   private AppUtils(){}

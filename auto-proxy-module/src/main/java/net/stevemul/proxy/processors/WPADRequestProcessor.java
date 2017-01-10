@@ -16,9 +16,9 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import net.stevemul.proxy.AutoProxyConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.modules.AutoProxyModule;
 import net.stevemul.proxy.template.TemplateEngine;
 
 /**
@@ -47,7 +47,7 @@ public class WPADRequestProcessor implements RequestProcessor {
   @Override
   public boolean accepts(ProxiedHttpRequest pRequest, ModuleSettings pSettings) {
     
-    boolean enabled = pSettings.getBooleanValue(AutoProxyModule.ENABLED);
+    boolean enabled = pSettings.getBooleanValue(AutoProxyConstants.ENABLED);
     
     if (enabled) {
       if (pRequest.getMethod().equals(HttpMethod.GET)) {
@@ -73,21 +73,21 @@ public class WPADRequestProcessor implements RequestProcessor {
       if (uri.endsWith(WPAD_URI)) {
         Map<String, Object> model = new HashMap<>();
         
-        String hostsToIntercept = pSettings.getStringValue(AutoProxyModule.HOSTS_TO_INTERCEPT);
-        String externalProxy = pSettings.getStringValue(AutoProxyModule.EXTERNAL_PROXY);
-        String noProxyFor = pSettings.getStringValue(AutoProxyModule.NO_PROXY_FOR);
+        String hostsToIntercept = pSettings.getStringValue(AutoProxyConstants.HOSTS_TO_INTERCEPT);
+        String externalProxy = pSettings.getStringValue(AutoProxyConstants.EXTERNAL_PROXY);
+        String noProxyFor = pSettings.getStringValue(AutoProxyConstants.NO_PROXY_FOR);
         
         if (!StringUtils.isEmpty(hostsToIntercept)) {
-          model.put(AutoProxyModule.HOSTS_TO_INTERCEPT, hostsToIntercept.split(","));
+          model.put(AutoProxyConstants.HOSTS_TO_INTERCEPT, hostsToIntercept.split(","));
         }
         
         if (!StringUtils.isEmpty(externalProxy)) {
-          model.put(AutoProxyModule.EXTERNAL_PROXY, externalProxy);
+          model.put(AutoProxyConstants.EXTERNAL_PROXY, externalProxy);
         }
         
         
         if (!StringUtils.isEmpty(noProxyFor)) {
-          model.put(AutoProxyModule.NO_PROXY_FOR, noProxyFor.split(","));
+          model.put(AutoProxyConstants.NO_PROXY_FOR, noProxyFor.split(","));
         }
         
         model.put(INTEREPT_PROXY, "localhost:9090");

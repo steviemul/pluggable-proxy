@@ -28,7 +28,7 @@ import net.stevemul.proxy.http.LocalHttpResponse;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.http.ProxiedHttpResponse;
 import net.stevemul.proxy.http.Response;
-import net.stevemul.proxy.modules.ModuleServiceImpl;
+import net.stevemul.proxy.modules.ModuleServiceXmlImpl;
 import net.stevemul.proxy.modules.api.Action;
 import net.stevemul.proxy.modules.api.Module;
 import net.stevemul.proxy.processors.RequestProcessor;
@@ -55,17 +55,17 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
   // Members
   //-------------------------------------------------------------------------------
   private static Log mLogger = LogFactory.getLog(DefaultProcessor.class);
-  private ModuleServiceImpl mModuleService;
+  private ModuleServiceXmlImpl mModuleService;
   
   /**
    * Instantiates a new default processor.
    */
   public DefaultProcessor() {
-    mModuleService = new ModuleServiceImpl();
+    mModuleService = new ModuleServiceXmlImpl();
     
     ServiceRegistry.registerModuleService(mModuleService);
     
-    mModuleService.loadModules();
+    mModuleService.loadModules("META-INF/module.xml");
   }
   
    /* (non-Javadoc)

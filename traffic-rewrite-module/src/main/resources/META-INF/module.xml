@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Traffic Rewrite</name>
+  <namespace>stevemul.net.trafficrewrite</namespace>
+  <loading-priority>15</loading-priority>
+   <settings>
+  	<setting>
+  	  <name>servingNonMin</name>
+  	  <type>CHECKBOX</type>
+  	  <order>1</order>
+  	  <label>Serve Non Minified Element &amp; Widget JS</label>
+  	</setting>
+  </settings>
+  <request-processors>
+  	<processor>net.stevemul.proxy.processors.TrafficRewriteRequestProcessor</processor>
+  </request-processors>
+</module>

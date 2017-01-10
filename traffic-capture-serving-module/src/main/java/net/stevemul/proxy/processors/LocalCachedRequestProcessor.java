@@ -23,11 +23,11 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.expression.Evaluator;
 import net.stevemul.proxy.expression.IOProcessor;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.modules.TrafficCaptureServingModule;
 import net.stevemul.proxy.utils.AppUtils;
 
 /**
@@ -54,7 +54,7 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
       return false;
     }
     
-    boolean servingLocal = pSettings.getBooleanValue(TrafficCaptureServingModule.SERVING_LOCAL);
+    boolean servingLocal = pSettings.getBooleanValue(TrafficCaptureConstants.SERVING_LOCAL);
     
     return servingLocal;
   }
@@ -67,7 +67,7 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
   public HttpResponse processRequest(ProxiedHttpRequest pRequest, HttpObject pObject, ModuleSettings pSettings) {
    
     try {
-      String contentLocationSetting = pSettings.getStringValue(TrafficCaptureServingModule.CONTENT_DIRECTORY);
+      String contentLocationSetting = pSettings.getStringValue(TrafficCaptureConstants.CONTENT_DIRECTORY);
       File contentLocation = new File(AppUtils.getContentOutputLocation(pRequest,contentLocationSetting));
       
       File headerLocation = new File(contentLocation.getPath() + ".hdrs");

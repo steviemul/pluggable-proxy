@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Serve Auto Proxy File</name>
+  <namespace>stevemul.net.autoproxy</namespace>
+  <loading-priority>20</loading-priority>
+   <settings>
+  	<setting>
+  	  <name>enabled</name>
+  	  <type>CHECKBOX</type>
+  	  <order>1</order>
+  	  <label>Enabled</label>
+  	</setting>
+  	<setting>
+  	  <name>hostsToIntercept</name>
+  	  <type>TEXT_BOX</type>
+  	  <order>2</order>
+  	  <label>Hosts to Intercept (Comma Separated)</label>
+  	</setting>
+  	<setting>
+  	  <name>noProxyFor</name>
+  	  <type>TEXT_BOX</type>
+  	  <order>3</order>
+  	  <label>No proxy for (Comma Separated)</label>
+  	</setting>
+  	<setting>
+  	  <name>externalProxy</name>
+  	  <type>TEXT_BOX</type>
+  	  <order>4</order>
+  	  <label>External Proxy</label>
+  	</setting>
+  </settings>
+  <request-processors>
+  	<processor>net.stevemul.proxy.processors.WPADRequestProcessor</processor>
+  </request-processors>
+</module>

@@ -12,6 +12,26 @@ public class ModuleSettings extends ArrayList<ModuleSettingData> {
   /** The Constant serialVersionUID. */
   private static final long serialVersionUID = -381395647817181395L;
   
+  private final String mNamespace;
+  
+  /**
+   * Instantiates a new module settings.
+   *
+   * @param pNamespace the namespace
+   */
+  public ModuleSettings(String pNamespace) {
+    mNamespace = pNamespace;
+  }
+  
+  /**
+   * Gets the namespace.
+   *
+   * @return the namespace
+   */
+  public String getNamespace() {
+    return mNamespace;
+  }
+  
   /**
    * Gets the string value.
    *
