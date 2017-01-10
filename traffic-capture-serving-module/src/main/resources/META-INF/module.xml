@@ -30,29 +30,29 @@
   	  <label>Content Directory</label>
   	</setting>
   	<setting>
+  	  <name>clearDirectory</name>
+  	  <type>ACTION</type>
+  	  <order>4</order>
+  	  <label>Clear Content Directory</label>
+  	</setting>
+  	<setting>
   	  <name>templateDirectory</name>
   	  <type>FILE</type>
-  	  <order>4</order>
+  	  <order>5</order>
   	  <label>Template Directory</label>
   	</setting>
   	<setting>
   	  <name>dumpTemplates</name>
   	  <type>CHECKBOX</type>
-  	  <order>5</order>
+  	  <order>6</order>
   	  <label>Dump Templates</label>
   	</setting>
   	<setting>
   	  <name>allowTemplateOverrides</name>
   	  <type>CHECKBOX</type>
-  	  <order>5</order>
+  	  <order>7</order>
   	  <default>false</default>
   	  <label>Allow Template Overrides</label>
-  	</setting>
-  	<setting>
-  	  <name>clearDirectory</name>
-  	  <type>ACTION</type>
-  	  <order>6</order>
-  	  <label>Clear Content Directory</label>
   	</setting>
   </settings>
   <loading-priority>10</loading-priority>

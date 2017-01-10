@@ -26,17 +26,25 @@ public class ClearContentDirectoryAction implements Action {
     
     String contentDirectory = pSettings.getStringValue(TrafficCaptureConstants.CONTENT_DIRECTORY);
     
+    File userHome = new File(System.getProperty("user.home"));
+    
     if (contentDirectory != null) {
       File directory = new File(contentDirectory);
       
-      if (directory.exists() && directory.isDirectory()) {
-        for (File child : directory.listFiles()) {
-          delete(child);
+      // Check the content directory is not left as users home directory (a mistake you only make once.)
+      if (!userHome.equals(directory)) {
+        if (directory.exists() && directory.isDirectory()) {
+          for (File child : directory.listFiles()) {
+            delete(child);
+          }
         }
+        
+        mLogger.info("Successfully cleared directory : " + contentDirectory);
+      }
+      else {
+        mLogger.warn("Not clearing directory, content directory set to users home directory");
       }
     }
-    
-    mLogger.info("Successfully cleared directory : " + contentDirectory);
   }
 
   /**
