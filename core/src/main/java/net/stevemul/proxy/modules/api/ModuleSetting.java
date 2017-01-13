@@ -1,5 +1,8 @@
 package net.stevemul.proxy.modules.api;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * The Class ModuleSetting.
  */
@@ -15,6 +18,8 @@ public class ModuleSetting {
   private final String mDefault;
   
   private final int mOrder;
+  
+  private Map<String, String> mOptions = new LinkedHashMap<>();
   
   /**
    * Instantiates a new module setting.
@@ -120,6 +125,25 @@ public class ModuleSetting {
     return mDefault;
   }
 
+  /**
+   * Adds the options.
+   *
+   * @param pKey the key
+   * @param pValue the value
+   */
+  public void addOption(String pKey, String pValue) {
+    mOptions.put(pKey, pValue);
+  }
+  
+  /**
+   * Gets the options.
+   *
+   * @return the options
+   */
+  public Map<String, String> getOptions() {
+    return mOptions;
+  }
+  
   /* (non-Javadoc)
    * @see java.lang.Object#hashCode()
    */

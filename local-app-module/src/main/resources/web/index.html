@@ -81,6 +81,17 @@
     </div>
   </script>
 
+  <script type="text/html" id="options-template">
+    <div class="form-group">
+      <label data-bind="text:label"></label>
+      <select class="form-control" data-bind="options: options,
+                      optionsText: 'key',
+                      optionsValue: 'value',
+                      value: value,
+                      optionsCaption: 'Choose...'"></select>
+    </div>
+  </script>
+
   <script type="text/html" id="file-template">
     <div class="form-group">
       <label data-bind="text:label,attr:{for:$parent.id() + '-' + key()}"></label>

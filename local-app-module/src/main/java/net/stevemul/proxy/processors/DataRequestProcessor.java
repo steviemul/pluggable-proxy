@@ -27,6 +27,7 @@ import net.stevemul.proxy.Constants;
 import net.stevemul.proxy.Environment;
 import net.stevemul.proxy.data.ModuleSettingData;
 import net.stevemul.proxy.data.ModuleSettings;
+import net.stevemul.proxy.events.EventType;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
 import net.stevemul.proxy.modules.api.Module;
 import net.stevemul.proxy.modules.api.ModuleSettingType;
@@ -217,10 +218,35 @@ public class DataRequestProcessor implements RequestProcessor {
         data.put("messages", Collections.<String>emptyList());
       }
       
+      if (ModuleSettingType.OPTIONS.getName().equals(setting.getType())) {
+        data.put("options", buildOptions(pModule.getSettingOptions(setting.getKey())));
+      }
+      
       settings.add(data);
     }
     
     return settings;
+  }
+  
+  /**
+   * Builds the options.
+   *
+   * @param pOptions the options
+   * @return the list
+   */
+  private List<Map<String, String>> buildOptions(Map<String, String> pOptions) {
+    List<Map<String, String>> options = new ArrayList<>();
+    
+    for (String key : pOptions.keySet()) {
+      Map<String, String> option = new HashMap<>();
+      
+      option.put("key", key);
+      option.put("value", pOptions.get(key));
+      
+      options.add(option);
+    }
+    
+    return options;
   }
   
   /**
@@ -258,6 +284,10 @@ public class DataRequestProcessor implements RequestProcessor {
             }
             
             mModuleService.saveModuleData(module, settingsData);
+            
+            if (module.getProxyEventListener() != null) {
+              ServiceRegistry.getEventService().dispatchEvent(module.getProxyEventListener(), EventType.SETTINGS_SAVED, module, settingsData);
+            }
           }
         }
       }

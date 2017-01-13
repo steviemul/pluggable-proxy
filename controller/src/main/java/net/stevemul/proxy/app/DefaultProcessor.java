@@ -33,6 +33,7 @@ import net.stevemul.proxy.modules.api.Action;
 import net.stevemul.proxy.modules.api.Module;
 import net.stevemul.proxy.processors.RequestProcessor;
 import net.stevemul.proxy.processors.ResponseProcessor;
+import net.stevemul.proxy.services.EventService;
 import net.stevemul.proxy.services.ServiceRegistry;
 
 /**
@@ -56,14 +57,17 @@ public class DefaultProcessor extends HttpFiltersSourceAdapter {
   //-------------------------------------------------------------------------------
   private static Log mLogger = LogFactory.getLog(DefaultProcessor.class);
   private ModuleServiceXmlImpl mModuleService;
+  private EventService mEventService;
   
   /**
    * Instantiates a new default processor.
    */
   public DefaultProcessor() {
     mModuleService = new ModuleServiceXmlImpl();
+    mEventService = new EventService();
     
     ServiceRegistry.registerModuleService(mModuleService);
+    ServiceRegistry.registerEventService(mEventService);
     
     mModuleService.loadModules("META-INF/module.xml");
   }

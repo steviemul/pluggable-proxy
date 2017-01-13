@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.mitm.RootCertificateException;
 
 import net.stevemul.proxy.Constants;
@@ -42,11 +43,12 @@ public class App {
       
       mMessenger = buildMessenger(parsedArgs);
       
-      proxy.start();
+      HttpProxyServer proxyServer = proxy.start();
       
       mMessenger.start();
       
       ServiceRegistry.registerMessenger(mMessenger);
+      ServiceRegistry.registerProxyServer(proxyServer);
       
       Runtime.getRuntime().addShutdownHook(new Thread() {
 

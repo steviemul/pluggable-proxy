@@ -3,6 +3,7 @@ package net.stevemul.proxy.modules.api;
 import java.util.List;
 import java.util.Map;
 
+import net.stevemul.proxy.events.ProxyEventListener;
 import net.stevemul.proxy.processors.RequestProcessor;
 import net.stevemul.proxy.processors.ResponseProcessor;
 
@@ -31,6 +32,13 @@ public interface Module {
    * @return the actions
    */
   public Map<String, Action> getActions();
+  
+  /**
+   * Gets the proxy event listener.
+   *
+   * @return the proxy event listener
+   */
+  public ProxyEventListener getProxyEventListener();
   
   /**
    * Gets the namespace.
@@ -67,4 +75,12 @@ public interface Module {
    * @return the loading priority
    */
   public int getLoadingPriority();
+  
+  /**
+   * Gets the setting options.
+   *
+   * @param pSettingKey the setting key
+   * @return the setting options
+   */
+  public Map<String, String> getSettingOptions(String pSettingKey);
 }

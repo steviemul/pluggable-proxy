@@ -18,6 +18,7 @@
     <module>traffic-rewrite-module</module>
     <module>auto-proxy-module</module>
     <module>static-resources-module</module>
+    <module>network-condition-module</module>
   </modules>
 
   <build>

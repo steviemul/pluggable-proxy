@@ -18,7 +18,9 @@ public enum ModuleSettingType {
   CONSOLE("console"),
   
   /** The action. */
-  ACTION("action");
+  ACTION("action"),
+  
+  OPTIONS("options");
   
   /**
    * Instantiates a new module setting type.

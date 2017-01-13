@@ -156,5 +156,10 @@
     	<artifactId>static-resources-module</artifactId>
     	<version>1.0</version>
     </dependency>
+    <dependency>
+    	<groupId>net.stevemul.proxy</groupId>
+    	<artifactId>network-condition-module</artifactId>
+    	<version>1.0</version>
+    </dependency>
   </dependencies>
 </project>

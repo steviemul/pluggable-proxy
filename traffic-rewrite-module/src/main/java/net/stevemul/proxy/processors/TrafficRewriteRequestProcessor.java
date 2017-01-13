@@ -22,7 +22,7 @@ public class TrafficRewriteRequestProcessor implements RequestProcessor {
     if (pSettings.getBooleanValue(SERVING_NON_MIN)) {
       String uri = pRequest.getUri();
       
-      if (uri.contains("/element/") || uri.contains("/widget/")) {
+      if (uri.contains("/element/") || uri.contains("/widget/") || uri.contains("/global/")) {
         return uri.contains(".min.js");
       }
     }

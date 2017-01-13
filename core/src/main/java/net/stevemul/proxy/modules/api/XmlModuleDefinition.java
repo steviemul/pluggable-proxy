@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import net.stevemul.proxy.events.ProxyEventListener;
 import net.stevemul.proxy.processors.RequestProcessor;
 import net.stevemul.proxy.processors.ResponseProcessor;
 import net.stevemul.proxy.xml.XMLProcessor;
@@ -18,6 +19,23 @@ import net.stevemul.proxy.xml.XMLProcessor;
  * The Class XmlModuleDefinition.
  */
 public class XmlModuleDefinition implements Module {
+  
+  public static final String MODULE = "module";
+  public static final String NAME = "name";
+  public static final String NAMESPACE = "namespace";
+  public static final String LOADING_PRIORITY = "loading-priority";
+  public static final String ORDER = "order";
+  public static final String TYPE = "type";
+  public static final String LABEL = "label";
+  public static final String KEY = "key";
+  public static final String DEFAULT = "default";
+  
+  public static final String SETTINGS_XPATH = "module/settings//setting";
+  public static final String REQUEST_PROCESSORS_XPATH = "module/request-processors//processor";
+  public static final String RESPONCE_PROCESSORS_XPATH = "module/response-processors//processor";
+  public static final String ACTIONS_XPATH = "module/actions//action";
+  public static final String OPTIONS_XPATH = "options//option";
+  public static final String EVENT_LISTENER_XPATH = "module/event-listener";
   
   /** The m name. */
   private String mName;
@@ -41,6 +59,8 @@ public class XmlModuleDefinition implements Module {
   
   private Map<String, String> mLabels = new HashMap<>();
   
+  private ProxyEventListener mEventListener;
+  
   /**
    * Instantiates a new xml module definition.
    *
@@ -51,25 +71,40 @@ public class XmlModuleDefinition implements Module {
     
     XMLProcessor processor = new XMLProcessor(pDefinition);
     
-    Node module = processor.getNode("module");
+    Node module = processor.getNode(MODULE);
     
-    mName = processor.getNodeValue(module, "name");
-    mNamespace = processor.getNodeValue(module, "namespace");
-    mLoadingPriority = Integer.parseInt(processor.getNodeValue(module, "loading-priority"));
+    mName = processor.getNodeValue(module, NAME);
+    mNamespace = processor.getNodeValue(module, NAMESPACE);
+    mLoadingPriority = Integer.parseInt(processor.getNodeValue(module, LOADING_PRIORITY));
     
-    NodeList settings = processor.getNodes("module/settings//setting");
+    NodeList settings = processor.getNodes(SETTINGS_XPATH);
     
     if (settings != null && settings.getLength() > 0) {
       for (int i=0;i<settings.getLength();i++) {
         Node setting = settings.item(i);
         
-        String settingName = processor.getNodeValue(setting, "name");
-        ModuleSettingType type = getSettingType(processor.getNodeValue(setting, "type"));
-        int order = Integer.parseInt(processor.getNodeValue(setting, "order"));
-        String label = processor.getNodeValue(setting, "label");
-        String defaultValue = processor.getNodeValue(setting, "default");
+        String settingName = processor.getNodeValue(setting, NAME);
+        ModuleSettingType type = getSettingType(processor.getNodeValue(setting, TYPE));
+        int order = Integer.parseInt(processor.getNodeValue(setting, ORDER));
+        String label = processor.getNodeValue(setting, LABEL);
+        String defaultValue = processor.getNodeValue(setting, DEFAULT);
         
         ModuleSetting moduleSetting = (StringUtils.isEmpty(defaultValue)) ? new ModuleSetting(settingName, type, order) : new ModuleSetting(settingName, type, defaultValue, order);
+        
+        if (ModuleSettingType.OPTIONS == type) {
+          NodeList options = processor.getNodes(setting, OPTIONS_XPATH);
+          
+          if (options != null && options.getLength() > 0) {
+            for (int j=0;j<options.getLength();j++) {
+              Node option = options.item(j);
+              
+              String optionKey = processor.getAttributeValue(option, "key");
+              String optionValue = option.getTextContent();
+              
+              moduleSetting.addOption(optionKey, optionValue);
+            }
+          }
+        }
         
         mModuleSettings.add(moduleSetting);
         
@@ -77,7 +112,7 @@ public class XmlModuleDefinition implements Module {
       }
     }
     
-    NodeList requestProcessors = processor.getNodes("module/request-processors//processor");
+    NodeList requestProcessors = processor.getNodes(REQUEST_PROCESSORS_XPATH);
     
     if (requestProcessors != null && requestProcessors.getLength() > 0) {
       for (int i=0;i<requestProcessors.getLength();i++) {
@@ -91,7 +126,7 @@ public class XmlModuleDefinition implements Module {
       }
     }
     
-    NodeList responseProcessors = processor.getNodes("module/response-processors//processor");
+    NodeList responseProcessors = processor.getNodes(RESPONCE_PROCESSORS_XPATH);
     
     if (responseProcessors != null && responseProcessors.getLength() > 0) {
       for (int i=0;i<responseProcessors.getLength();i++) {
@@ -105,20 +140,30 @@ public class XmlModuleDefinition implements Module {
       }
     }
     
-    NodeList actions = processor.getNodes("module/actions//action");
+    NodeList actions = processor.getNodes(ACTIONS_XPATH);
     
     if (actions != null && actions.getLength() > 0) {
       for (int i=0;i<actions.getLength();i++) {
         Node action = actions.item(i);
         
         String className = action.getTextContent();
-        String actionKey = processor.getAttributeValue(action, "key");
+        String actionKey = processor.getAttributeValue(action, KEY);
         
         Action actionInstance = (Action)Class.forName(className).newInstance();
         
         mActions.put(actionKey, actionInstance);
       }
     } 
+    
+    Node eventListener = processor.getNode(EVENT_LISTENER_XPATH);
+    
+    if (eventListener != null) {
+      String className = eventListener.getTextContent();
+      
+      ProxyEventListener eventListenerInstance = (ProxyEventListener)Class.forName(className).newInstance();
+      
+      mEventListener = eventListenerInstance;
+    }
   }
   
   /* (non-Javadoc)
@@ -143,6 +188,15 @@ public class XmlModuleDefinition implements Module {
   @Override
   public Map<String, Action> getActions() {
     return mActions;
+  }
+
+  
+  /* (non-Javadoc)
+   * @see net.stevemul.proxy.modules.api.Module#getProxyEventListener()
+   */
+  @Override
+  public ProxyEventListener getProxyEventListener() {
+    return mEventListener;
   }
 
   /* (non-Javadoc)
@@ -185,6 +239,22 @@ public class XmlModuleDefinition implements Module {
     return mLoadingPriority;
   }
   
+  
+  /* (non-Javadoc)
+   * @see net.stevemul.proxy.modules.api.Module#getSettingOptions(java.lang.String)
+   */
+  @Override
+  public Map<String, String> getSettingOptions(String pSettingKey) {
+    
+    for (ModuleSetting setting : mModuleSettings) {
+      if (setting.getType() == ModuleSettingType.OPTIONS && pSettingKey.equals(setting.getName())) {
+        return setting.getOptions();
+      }
+    }
+    
+    return null;
+  }
+
   /**
    * Gets the setting type.
    *
@@ -204,6 +274,8 @@ public class XmlModuleDefinition implements Module {
         return ModuleSettingType.CONSOLE;
       case "ACTION":
         return ModuleSettingType.ACTION;
+      case "OPTIONS":
+        return ModuleSettingType.OPTIONS;
     }
     
     return null;

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+  <name>Network Conditions</name>
+  <namespace>stevemul.net.networkcondiions</namespace>
+  <loading-priority>50</loading-priority>
+  <event-listener>net.stevemul.proxy.events.ThrottlingEventListener</event-listener>
+  <settings>
+  	<setting>
+  	  <name>bandwidth</name>
+  	  <type>OPTIONS</type>
+  	  <order>1</order>
+  	  <label>Throttling bandwidth</label>
+  	  <options>
+  	  	<option key="No Throttling">0</option>
+  	  	<option key="GPRS (50kb/s)">50000</option>
+  	  	<option key="Regular 2G (250kb/s">250000</option>
+  	  	<option key="Good 2G (450kb/s)">450000</option>
+  	  	<option key="Regular 3G (750kb/s)">750000</option>
+  	  	<option key="Good 3G (1.5Mb/s)">1500000</option>
+  	  	<option key="Regular 4G (4Mb/s">4000000</option>
+  	  	<option key="Wifi (30Mb/s)">30000000</option>
+  	  </options>
+  	</setting>
+  </settings>
+</module>

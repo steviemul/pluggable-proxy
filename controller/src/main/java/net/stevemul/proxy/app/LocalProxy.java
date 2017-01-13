@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.littleshoot.proxy.ChainedProxy;
 import org.littleshoot.proxy.ChainedProxyAdapter;
 import org.littleshoot.proxy.ChainedProxyManager;
+import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpProxyServerBootstrap;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 import org.littleshoot.proxy.mitm.RootCertificateException;
@@ -78,7 +79,7 @@ public class LocalProxy {
    * Start.
    * @throws RootCertificateException 
    */
-  public void start() throws RootCertificateException {
+  public HttpProxyServer start() throws RootCertificateException {
     
     mLogger.info("Starting proxy on port " + mListenPort);
    
@@ -110,7 +111,7 @@ public class LocalProxy {
    
     mLogger.info("Proxy initialization successful");
     
-    mServer.start();
+    return mServer.start();
   }
   
 }

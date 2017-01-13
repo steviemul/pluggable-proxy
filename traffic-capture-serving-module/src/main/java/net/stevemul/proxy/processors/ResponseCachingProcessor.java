@@ -44,11 +44,11 @@ public class ResponseCachingProcessor extends AbstractResponseProcessor {
 
 
   /* (non-Javadoc)
-   * @see net.stevemul.proxy.processors.AbstractResponseProcessor#processServerToProxyResponse(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.http.Response, net.stevemul.proxy.data.ModuleSettings)
+   * @see net.stevemul.proxy.processors.AbstractResponseProcessor#processProxyToClientResponse(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.http.Response, net.stevemul.proxy.data.ModuleSettings)
    */
   @Override
-  public Response processServerToProxyResponse(ProxiedHttpRequest pRequest, Response pResponse, ModuleSettings pSettings) {
-    
+  public Response processProxyToClientResponse(ProxiedHttpRequest pRequest, Response pResponse,
+      ModuleSettings pSettings) {
     try {
       String contentLocationSetting = pSettings.getStringValue(TrafficCaptureConstants.CONTENT_DIRECTORY);
       
@@ -76,6 +76,9 @@ public class ResponseCachingProcessor extends AbstractResponseProcessor {
  
     return pResponse;
   }
+
+
+  
 
   /**
    * Save headers.
