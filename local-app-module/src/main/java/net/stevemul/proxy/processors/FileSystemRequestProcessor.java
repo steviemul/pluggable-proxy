@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
-import net.stevemul.proxy.processors.RequestProcessor;
 
 /**
  * The Class FileSystemRequestProcessor.
@@ -155,7 +155,15 @@ public class FileSystemRequestProcessor implements RequestProcessor {
     if (pFile.exists() && pFile.isDirectory()) {
       File[] files = pFile.listFiles();
       
-      Arrays.sort(files);
+      Arrays.sort(files, new Comparator<File>(){
+
+        @Override
+        public int compare(File file1, File file2) {
+          
+          return file1.getName().compareToIgnoreCase(file2.getName());
+        }
+        
+      });
       
       for (File child : files) {
         if (!child.isHidden()) {
