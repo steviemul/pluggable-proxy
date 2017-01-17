@@ -15,7 +15,7 @@
     <module>traffic-output-module</module>
     
     <module>traffic-capture-serving-module</module>
-    <module>traffic-rewrite-module</module>
+    <module>occ-module</module>
     <module>auto-proxy-module</module>
     <module>static-resources-module</module>
     <module>network-condition-module</module>

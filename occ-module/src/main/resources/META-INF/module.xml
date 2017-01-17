@@ -8,7 +8,7 @@
   	  <name>servingNonMin</name>
   	  <type>CHECKBOX</type>
   	  <order>1</order>
-  	  <label>Serve Non Minified Element &amp; Widget JS</label>
+  	  <label>Serve Non Minified Element, Widget &amp; Application Level JS.</label>
   	</setting>
   	<setting>
   	  <name>overrideMain</name>
@@ -20,7 +20,7 @@
   	  <name>overrideMainLocation</name>
   	  <type>FILE</type>
   	  <order>3</order>
-  	  <label>Location of local main.js</label>
+  	  <label>Location of local main.js.</label>
   	</setting>
   	<setting>
   	  <name>overrideStorelibs</name>
@@ -34,9 +34,31 @@
   	  <order>5</order>
   	  <label>Location of local store-libs.js</label>
   	</setting>
+  	<setting>
+  	  <name>templateDirectory</name>
+  	  <type>FOLDER</type>
+  	  <order>6</order>
+  	  <label>Template Directory</label>
+  	</setting>
+  	<setting>
+  	  <name>dumpTemplates</name>
+  	  <type>CHECKBOX</type>
+  	  <order>7</order>
+  	  <label>Dump Templates</label>
+  	</setting>
+  	<setting>
+  	  <name>allowTemplateOverrides</name>
+  	  <type>CHECKBOX</type>
+  	  <order>8</order>
+  	  <default>false</default>
+  	  <label>Allow Template Overrides</label>
+  	</setting>
   </settings>
   <request-processors>
   	<processor>net.stevemul.proxy.processors.TrafficRewriteRequestProcessor</processor>
   	<processor>net.stevemul.proxy.processors.JavascriptLibsOverrideRequestProcessor</processor>
   </request-processors>
+  <response-processors>
+  	<processor>net.stevemul.proxy.processors.PagesEndpointResponseProcessor</processor>
+  </response-processors>
 </module>

@@ -8,7 +8,7 @@
     <version>1.0</version>
   </parent>
   <groupId>net.stevemul.proxy</groupId>
-  <artifactId>traffic-rewrite-module</artifactId>
+  <artifactId>occ-module</artifactId>
   <version>1.0</version>
   <name>traffic-rewrite-module</name>
   <url>http://maven.apache.org</url>

@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import net.stevemul.proxy.TrafficCaptureConstants;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.LocalHttpResponse;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
@@ -50,6 +49,12 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
   /** The Constant TEMPLATE_SRC. */
   public static final String TEMPLATE_SRC = "templateSrc";
   public static final String ELEMENTS_SRC = "elementsSrc";
+  
+  public static final String TEMPLATE_DIRECTORY = "templateDirectory";
+  
+  public static final String ALLOW_TEMPLATE_OVERRIDES = "allowTemplateOverrides";
+  
+  public static final String DUMP_TEMPLATES = "dumpTemplates";
   
   /** The m logger. */
   private static Log mLogger = LogFactory.getLog(PagesEndpointResponseProcessor.class);
@@ -136,8 +141,8 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
    */
   private void processPagesEndpoint(JSONObject pInput, ModuleSettings pSettings) {
   
-    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureConstants.ALLOW_TEMPLATE_OVERRIDES);
-    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureConstants.DUMP_TEMPLATES);
+    boolean allowTemplateOverrides = pSettings.getBooleanValue(ALLOW_TEMPLATE_OVERRIDES);
+    boolean dumpTemplates = pSettings.getBooleanValue(DUMP_TEMPLATES);
     
     if (allowTemplateOverrides || dumpTemplates) {
       JSONArray regions = pInput.optJSONArray(REGIONS);
@@ -156,7 +161,7 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
               
               try {
                 
-                String templateDir = pSettings.getStringValue(TrafficCaptureConstants.TEMPLATE_DIRECTORY);
+                String templateDir = pSettings.getStringValue(TEMPLATE_DIRECTORY);
                 
                 String templateSrcLocation = templateDir + File.separator + id + ".html";
                 String elementSrcLocation = templateDir + File.separator + id + ".elements.html";
@@ -187,8 +192,8 @@ public class PagesEndpointResponseProcessor extends AbstractResponseProcessor {
    */
   private void overrideWidgetPropertyFromFileIfApplicable(JSONObject pWidget, String pProperty, String pFileLocation, ModuleSettings pSettings) throws FileNotFoundException, IOException {
     
-    boolean allowTemplateOverrides = pSettings.getBooleanValue(TrafficCaptureConstants.ALLOW_TEMPLATE_OVERRIDES);
-    boolean dumpTemplates = pSettings.getBooleanValue(TrafficCaptureConstants.DUMP_TEMPLATES);
+    boolean allowTemplateOverrides = pSettings.getBooleanValue(ALLOW_TEMPLATE_OVERRIDES);
+    boolean dumpTemplates = pSettings.getBooleanValue(DUMP_TEMPLATES);
     
     String prop = pWidget.optString(pProperty, "");
     

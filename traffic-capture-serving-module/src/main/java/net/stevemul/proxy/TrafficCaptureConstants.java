@@ -23,14 +23,6 @@ public class TrafficCaptureConstants {
   /** The Constant CLEAR_DIRECTORY. */
   public static final String CLEAR_DIRECTORY = "clearDirectory";
   
-  public static final String CAPTURING_PATTERN = "capturingPattern";
-  
-  public static final String TEMPLATE_DIRECTORY = "templateDirectory";
-  
-  public static final String ALLOW_TEMPLATE_OVERRIDES = "allowTemplateOverrides";
-  
-  public static final String DUMP_TEMPLATES = "dumpTemplates";
-  
   public static final String ENABLE_ALTERNATE_SERVER_LOOKUPS = "alternateServerLookups";
   
   public static final String ALTERNATE_SERVER_RESOURCES = "alternateServerResources";
