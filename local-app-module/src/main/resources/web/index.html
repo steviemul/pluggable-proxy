@@ -92,6 +92,26 @@
     </div>
   </script>
 
+  <script type="text/html" id="folder-template">
+    <div class="form-group">
+      <label data-bind="text:label,attr:{for:$parent.id() + '-' + key()}"></label>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+          	<span data-bind="css:folderClass"></span>
+            <a  data-bind="text:value, attr:{href:'#' + $parent.id() + '-' + key()}" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1"></a>
+          </h4>
+        </div>
+        <div data-bind="attr:{id:$parent.id() + '-' + key()}, proxy-fileTree:{foldersOnly:true}" class="panel-collapse collapse fileSelector" role="tabpanel" aria-expanded="true">
+
+        </div>
+      </div>
+
+    </div>
+
+  </script>
+
   <script type="text/html" id="file-template">
     <div class="form-group">
       <label data-bind="text:label,attr:{for:$parent.id() + '-' + key()}"></label>

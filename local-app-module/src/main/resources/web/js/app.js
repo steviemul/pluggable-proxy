@@ -20,23 +20,26 @@
 
   ko.bindingHandlers['proxy-fileTree'] = {
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      var id = bindingContext.$parent.id() + '-' + viewModel.key();
+      var id = bindingContext.$parent.id() + '-' + viewModel.key(), uri = '/.api/file', value = valueAccessor();
+
+      if (value && value.foldersOnly == true) {
+        uri = uri + '?dirs=true'
+      }
 
       $(element).fileTree({
           root: '/',
-          script: '/.api/file?dirs=true',
+          script: uri,
           expandSpeed: 500,
           collapseSpeed: 500,
           multiFolder: false
         },
         function (file) {
-
+          viewModel.value(file);
         },
         function (dir) {
           viewModel.value(dir);
         }
       );
-
     }
   };
 
@@ -79,7 +82,7 @@
             shouldShowSave = true;
           }
 
-          if (type == 'file') {
+          if (type == 'file' || type == 'folder') {
             setting.folderClass = ko.observable('glyphicon glyphicon-folder-close');
           }
         }

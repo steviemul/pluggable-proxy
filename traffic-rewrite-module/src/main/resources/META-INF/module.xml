@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <module>
-  <name>Traffic Rewrite</name>
-  <namespace>stevemul.net.trafficrewrite</namespace>
-  <loading-priority>15</loading-priority>
+  <name>Oracle Commerce</name>
+  <namespace>stevemul.net.occ</namespace>
+  <loading-priority>90</loading-priority>
    <settings>
   	<setting>
   	  <name>servingNonMin</name>
@@ -10,8 +10,33 @@
   	  <order>1</order>
   	  <label>Serve Non Minified Element &amp; Widget JS</label>
   	</setting>
+  	<setting>
+  	  <name>overrideMain</name>
+  	  <type>CHECKBOX</type>
+  	  <order>2</order>
+  	  <label>Override main.js with a local copy.</label>
+  	</setting>
+  	<setting>
+  	  <name>overrideMainLocation</name>
+  	  <type>FILE</type>
+  	  <order>3</order>
+  	  <label>Location of local main.js</label>
+  	</setting>
+  	<setting>
+  	  <name>overrideStorelibs</name>
+  	  <type>CHECKBOX</type>
+  	  <order>4</order>
+  	  <label>Override store-libs.js with a local copy.</label>
+  	</setting>
+  	<setting>
+  	  <name>overrideStoreLibsLocation</name>
+  	  <type>FILE</type>
+  	  <order>5</order>
+  	  <label>Location of local store-libs.js</label>
+  	</setting>
   </settings>
   <request-processors>
   	<processor>net.stevemul.proxy.processors.TrafficRewriteRequestProcessor</processor>
+  	<processor>net.stevemul.proxy.processors.JavascriptLibsOverrideRequestProcessor</processor>
   </request-processors>
 </module>

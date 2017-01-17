@@ -268,6 +268,8 @@ public class XmlModuleDefinition implements Module {
         return ModuleSettingType.TEXT_BOX;
       case "FILE":
         return ModuleSettingType.FILE;
+      case "FOLDER":
+        return ModuleSettingType.FOLDER;
       case "CHECKBOX":
         return ModuleSettingType.CHECKBOX;
       case "CONSOLE":

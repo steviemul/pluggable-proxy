@@ -14,6 +14,8 @@ public enum ModuleSettingType {
   /** The file. */
   FILE("file"),
   
+  FOLDER("folder"),
+  
   /** The console. */
   CONSOLE("console"),
   

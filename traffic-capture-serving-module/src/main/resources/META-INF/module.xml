@@ -25,7 +25,7 @@
   	</setting>
   	<setting>
   	  <name>contentDirectory</name>
-  	  <type>FILE</type>
+  	  <type>FOLDER</type>
   	  <order>3</order>
   	  <label>Content Directory</label>
   	</setting>
@@ -37,7 +37,7 @@
   	</setting>
   	<setting>
   	  <name>templateDirectory</name>
-  	  <type>FILE</type>
+  	  <type>FOLDER</type>
   	  <order>5</order>
   	  <label>Template Directory</label>
   	</setting>

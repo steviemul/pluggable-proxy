@@ -39,6 +39,7 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
  
   public static final String FORWARD_SLASH = "/";
   public static final String ADMIN_CONTEXT = FORWARD_SLASH + ".proxy";
+  public static final String AUTO_CONTEXT = FORWARD_SLASH + ".auto";
   
   /* (non-Javadoc)
    * @see net.stevemul.proxy.processors.Processor#accepts(net.stevemul.proxy.http.ProxiedHttpRequest, net.stevemul.proxy.data.ModuleSettings)
@@ -50,7 +51,7 @@ public class LocalCachedRequestProcessor implements RequestProcessor  {
       return false;
     }
     
-    if (pRequest.getUri().startsWith(ADMIN_CONTEXT)) {
+    if (pRequest.getUri().startsWith(ADMIN_CONTEXT) || pRequest.getUri().startsWith(AUTO_CONTEXT)) {
       return false;
     }
     

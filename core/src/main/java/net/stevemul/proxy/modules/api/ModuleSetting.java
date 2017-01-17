@@ -32,7 +32,7 @@ public class ModuleSetting {
     mType = pType;
     mOrder = 0;
     
-    if (mType == ModuleSettingType.FILE) {
+    if (mType == ModuleSettingType.FILE || mType == ModuleSettingType.FOLDER) {
       mDefault = System.getProperty("user.home");
     }
     else {
@@ -66,7 +66,7 @@ public class ModuleSetting {
     mType = pType;
     mOrder = pOrder;
     
-    if (mType == ModuleSettingType.FILE) {
+    if (mType == ModuleSettingType.FILE || mType == ModuleSettingType.FOLDER) {
       mDefault = System.getProperty("user.home");
     }
     else {

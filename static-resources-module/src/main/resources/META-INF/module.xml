@@ -18,7 +18,7 @@
   	</setting>
   	<setting>
   	  <name>staticResourcesDirectory</name>
-  	  <type>FILE</type>
+  	  <type>FOLDER</type>
   	  <order>3</order>
   	  <label>Location of local resources</label>
   	</setting>
