@@ -30,6 +30,7 @@ public class WPADRequestProcessor implements RequestProcessor {
   public static final String WPAD_URI = ".auto/proxy.pac";
   public static final String WPAD_TEMPLATE = "templates/wpad.tmpl";
   public static final String INTEREPT_PROXY = "interceptProxy";
+  public static final String PROXY_MIME_TYPE = "application/x-ns-proxy-autoconfig";
   
   /** The m template instance. */
   private TemplateEngine mTemplateInstance;
@@ -99,7 +100,7 @@ public class WPADRequestProcessor implements RequestProcessor {
         
         DefaultFullHttpResponse newResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buffer);
         
-        newResponse.headers().add("Content-Type", "application/x-ns-proxy-autoconfig");
+        newResponse.headers().add("Content-Type", PROXY_MIME_TYPE);
         
         HttpHeaders.setContentLength(newResponse, response.length);
         

@@ -3,7 +3,9 @@ package net.stevemul.proxy.utils;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.stevemul.proxy.Constants.FORWARD_SLASH;
 import static net.stevemul.proxy.Constants.HOST;
-
+import static net.stevemul.proxy.Constants.HASH;
+import static net.stevemul.proxy.Constants.Q_MARK;
+  
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,14 +111,14 @@ public class AppUtils {
     String host = pRequest.getHeader(HOST);
       
     if (!StringUtils.isEmpty(host)) {
-      File outputFile = new File(pContentDirectory + File.separator + host + File.separator + resource);
+      File outputFile = new File(pContentDirectory + File.separator + host + File.separator + getOSPath(resource));
         
       if (outputFile.getParentFile() != null) {
         outputFile.getParentFile().mkdirs();
       }
       
       if (outputFile.getName().length() > MAX_FILENAME_LENGTH) {
-        String hashedName = AppUtils.createHash(outputFile.getName()).replace("/", "#");
+        String hashedName = AppUtils.createHash(outputFile.getName()).replace(FORWARD_SLASH, HASH);
         
         outputFile = new File(outputFile.getParentFile() + File.separator + hashedName);
       }
@@ -151,7 +153,7 @@ public class AppUtils {
    * @return the query string
    */
   public static String getQueryString(String pUri) {
-    int pos = pUri.indexOf("?");
+    int pos = pUri.indexOf(Q_MARK);
     
     if (pos > -1) {
       return pUri.substring(pos + 1);
@@ -168,12 +170,12 @@ public class AppUtils {
    */
   public static String getLastPath(String pUri) {
     
-    int pos = pUri.indexOf("?");
+    int pos = pUri.indexOf(Q_MARK);
     
     if (pos > -1) {
       String path = pUri.substring(0, pos);
        
-      pos = path.lastIndexOf("/");
+      pos = path.lastIndexOf(FORWARD_SLASH);
       
       if (pos > -1) {
         return path.substring(pos + 1);
@@ -200,6 +202,17 @@ public class AppUtils {
     }
   
     return list;
+  }
+  
+  /**
+   * Gets the OS path.
+   *
+   * @param pPath the path
+   * @return the OS path
+   */
+  public static String getOSPath(String pPath) {
+    
+    return pPath.replaceAll(FORWARD_SLASH, File.separator);
   }
   
   private AppUtils(){}

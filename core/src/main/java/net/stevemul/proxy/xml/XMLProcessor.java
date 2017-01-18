@@ -1,24 +1,17 @@
 package net.stevemul.proxy.xml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
@@ -252,45 +245,4 @@ public class XMLProcessor {
     return this.document;
   }
   
-  /**
-   * Output doc.
-   *
-   * @param location the location
-   * @throws Exception the exception
-   */
-  public void outputDoc(String location) throws Exception {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    transformerFactory.setAttribute("indent-number", new Integer(2));
-    Transformer transformer = transformerFactory.newTransformer();
-    
-    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-    
-    final DocumentType doctype = document.getDoctype();
-    if(doctype != null) {
-      String systemId = doctype.getSystemId();
-      String publicId = doctype.getPublicId();
-      
-      if(systemId != null) {
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemId);
-      }
-      
-      if(publicId != null) {
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, publicId);
-      }
-    }
-    
-    File target = new File(location);
-    
-    if(target.exists()) {
-      target.delete();
-    }
-    
-    DOMSource source = new DOMSource(document);
-    
-    StreamResult result = new StreamResult(new File(location));
-    
-    transformer.transform(source, result);
-  }
 }

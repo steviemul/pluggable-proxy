@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
+import net.stevemul.proxy.utils.AppUtils;
 import net.stevemul.proxy.utils.MimeUtils;
 
 /**
@@ -84,7 +85,7 @@ public class StaticResourcesRequestProcessor implements RequestProcessor {
     String resourcePath = pRequest.getResourcePath();
     String resourcesLocation = pSettings.getStringValue(STATIC_RESOURCES_DIRECTORY);
     
-    String localPath = resourcesLocation + resourcePath;
+    String localPath = resourcesLocation + AppUtils.getOSPath(resourcePath);
     
     File resource = new File(localPath);
     
