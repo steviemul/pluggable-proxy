@@ -5,7 +5,9 @@ import static net.stevemul.proxy.Constants.FORWARD_SLASH;
 import static net.stevemul.proxy.Constants.HOST;
 import static net.stevemul.proxy.Constants.HASH;
 import static net.stevemul.proxy.Constants.Q_MARK;
-  
+import static net.stevemul.proxy.Constants.BACK_SLASH;
+import static net.stevemul.proxy.Constants.UNDERSCORE;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -212,7 +214,16 @@ public class AppUtils {
    */
   public static String getOSPath(String pPath) {
     
-    return pPath.replaceAll(FORWARD_SLASH, File.separator);
+    String replacement = File.separator;
+    
+    if (BACK_SLASH.equals(replacement)) {
+      // windows doesn't like question marks in file paths (sigh).
+      pPath = pPath.replaceAll(BACK_SLASH + Q_MARK, UNDERSCORE);
+      
+      replacement = replacement + BACK_SLASH;
+    }
+    
+    return pPath.replaceAll(FORWARD_SLASH, replacement);
   }
   
   private AppUtils(){}

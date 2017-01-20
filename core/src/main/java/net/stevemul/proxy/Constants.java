@@ -4,6 +4,9 @@ public class Constants {
 
   public static final String Q_MARK = "?";
   public static final String FORWARD_SLASH = "/";
+  public static final String BACK_SLASH = "\\";
+  public static final String UNDERSCORE = "_";
+  
   public static final String HOST = "Host";
   public static final int DEFAULT_SOCKET_IO_PORT = 9091;
   public static final String DEFAULT_HOSTNAME = "localhost";

@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import net.stevemul.proxy.data.ModuleSettings;
 import net.stevemul.proxy.http.ProxiedHttpRequest;
+import net.stevemul.proxy.utils.AppUtils;
 
 /**
  * The Class FileSystemRequestProcessor.
@@ -55,13 +56,13 @@ public class FileSystemRequestProcessor implements RequestProcessor {
     
     HttpResponseStatus status = HttpResponseStatus.OK;
     
-    String dir = FORWARD_SLASH;
+    String dir = File.separator;
     
     if (pRequest.getMethod().equals(HttpMethod.POST)) {
-        dir = getDir(pRequest.getRequestBody());
+      dir = getDir(pRequest.getRequestBody());
     }
     
-    if (FORWARD_SLASH.equals(dir)) {
+    if (File.separator.equals(dir)) {
       dir = System.getProperty("user.home") + File.separator;
     }
     
@@ -99,14 +100,14 @@ public class FileSystemRequestProcessor implements RequestProcessor {
       String[] parts = pRequestBody.split("=");
       
       if (parts.length == 2 && "dir".equals(parts[0])) {
-        return parts[1];
+        return URLDecoder.decode(AppUtils.getOSPath(parts[1]), "UTF-8");
       }
     }
     catch (Exception e) {
       mLogger.error("Error reading file", e);
     }
     
-    return "/";
+    return File.separator;
   }
   
   /**
@@ -155,31 +156,34 @@ public class FileSystemRequestProcessor implements RequestProcessor {
     if (pFile.exists() && pFile.isDirectory()) {
       File[] files = pFile.listFiles();
       
-      Arrays.sort(files, new Comparator<File>(){
-
-        @Override
-        public int compare(File file1, File file2) {
-          
-          return file1.getName().compareToIgnoreCase(file2.getName());
-        }
+      if (files != null && files.length > 0) {
         
-      });
-      
-      for (File child : files) {
-        if (!child.isHidden()) {
-          if (child.isDirectory()) {
-            response.append(String.format(DIR_TAG, child.getPath(), child.getName()));
+        Arrays.sort(files, new Comparator<File>(){
+  
+          @Override
+          public int compare(File file1, File file2) {
+            
+            return file1.getName().compareToIgnoreCase(file2.getName());
           }
-          else if (pShowFiles && child.isFile()) {
-            String ext = "js";
-            
-            int extPos = child.getName().lastIndexOf(".");
-            
-            if (extPos > -1) {
-              ext = child.getName().substring(extPos + 1);
+          
+        });
+        
+        for (File child : files) {
+          if (!child.isHidden()) {
+            if (child.isDirectory()) {
+              response.append(String.format(DIR_TAG, child.getPath(), child.getName()));
             }
-            
-            response.append(String.format(FILE_TAG, ext, child.getPath(), child.getName()));
+            else if (pShowFiles && child.isFile()) {
+              String ext = "js";
+              
+              int extPos = child.getName().lastIndexOf(".");
+              
+              if (extPos > -1) {
+                ext = child.getName().substring(extPos + 1);
+              }
+              
+              response.append(String.format(FILE_TAG, ext, child.getPath(), child.getName()));
+            }
           }
         }
       }
