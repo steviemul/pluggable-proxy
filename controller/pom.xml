@@ -143,11 +143,6 @@
     </dependency>
     <dependency>
     	<groupId>net.stevemul.proxy</groupId>
-    	<artifactId>occ-module</artifactId>
-    	<version>1.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>net.stevemul.proxy</groupId>
     	<artifactId>auto-proxy-module</artifactId>
     	<version>1.0</version>
     </dependency>
