@@ -1,0 +1,6 @@
+*.log
+docker-compose.yml
+Dockerfile
+README.sh
+*.p12
+*.pem

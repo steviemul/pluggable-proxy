@@ -7,3 +7,4 @@ target/
 **/*.p12
 **/*.pem
 .dbeaver-data-sources.xml
+devproxy

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  dev-proxy:
+    build:
+      context: ./
+    ports:
+      - "9090:9090"
+      - "9091:9091"
+    volumes:
+     - ./devproxy:/root/.devproxy
+     - ./devproxy/content:/root/content
+
+

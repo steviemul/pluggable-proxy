@@ -37,7 +37,7 @@ public class LocalProxy {
   String mDownstreamProxyHost = null;
   int mDownstreamProxyPort = 80;
   boolean mTrustAllCertificates = false;
-  boolean mLocalOnlyConnections = true;
+  boolean mLocalOnlyConnections = false;
   
   /**
    * Chained proxy manager.
