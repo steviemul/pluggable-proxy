@@ -8,6 +8,6 @@ WORKDIR /proxy
 
 RUN mvn clean package
 
-WORKDIR /proxy/controller/target/appassembler/bin
+ENTRYPOINT ["./proxy.sh"]
 
-CMD ["./app"]
+CMD ["-mitm"]
